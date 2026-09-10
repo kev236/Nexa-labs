@@ -1,58 +1,39 @@
-import {defineField, defineType} from 'sanity'
+import { defineType, defineField } from 'sanity'
 
-export default defineType({
+export const product = defineType({
   name: 'product',
-  title: 'Product',
+  title: 'Producten',
   type: 'document',
   fields: [
-    defineField({
-      name: 'name',
-      title: 'Product Name',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'name',
-        maxLength: 96,
-      },
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      validation: (Rule) => Rule.required(),
-    }),
+    defineField({ name: 'name', title: 'Productnaam', type: 'string', validation: (Rule) => Rule.required() }),
+    defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'name' }, validation: (Rule) => Rule.required() }),
+    defineField({ name: 'description', title: 'Korte Omschrijving', type: 'text', rows: 3 }),
+    defineField({ name: 'price', title: 'Prijs (€)', type: 'number' }),
     defineField({
       name: 'status',
       title: 'Status',
       type: 'string',
       options: {
         list: [
-          {title: 'Coming Soon', value: 'Coming soon'},
-          {title: 'Beta', value: 'Beta'},
-          {title: 'Live', value: 'Live'},
+          { title: 'Coming Soon', value: 'coming-soon' },
+          { title: 'Beta', value: 'beta' },
+          { title: 'Live', value: 'live' },
         ],
-        layout: 'radio',
       },
-      validation: (Rule) => Rule.required(),
+    }),
+    defineField({ name: 'icon', title: 'Icooenaam (Lucide Icon)', type: 'string' }),
+    defineField({ name: 'image', title: 'Afbeelding', type: 'image', options: { hotspot: true } }),
+    defineField({
+      name: 'features',
+      title: 'Features',
+      type: 'array',
+      of: [{ type: 'string' }],
     }),
     defineField({
-      name: 'iconName',
-      title: 'Icon',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Document (FileText)', value: 'FileText'},
-          {title: 'Email (Mail)', value: 'Mail'},
-          {title: 'Analytics (Activity)', value: 'Activity'},
-        ],
-      },
-      validation: (Rule) => Rule.required(),
+      name: 'body',
+      title: 'Uitgebreide Content',
+      type: 'array',
+      of: [{ type: 'block' }, { type: 'image' }],
     }),
   ],
 })

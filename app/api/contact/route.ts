@@ -20,6 +20,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    return NextResponse.json({ error: 'Er ging iets mis' }, { status: 500 })
+    console.error('Sanity Write Error:', error) // Toont de exacte fout in je terminal
+    return NextResponse.json({ error: String(error) }, { status: 500 })
   }
 }

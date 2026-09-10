@@ -7,13 +7,13 @@
 }
 
 body {
-  background-color: theme('colors.background');
-  color: theme('colors.foreground');
+  background-color: #050505;
+  color: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar for a premium feel */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }

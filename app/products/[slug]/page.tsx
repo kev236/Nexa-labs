@@ -1,7 +1,7 @@
 import { getProductBySlug, getProducts } from '@/data/products'
 import { urlFor } from '@/lib/sanity'
+import WaitlistForm from '@/components/WaitlistForm'
 import Image from 'next/image'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
@@ -21,6 +21,8 @@ export default async function ProductDetailPage({
     notFound()
   }
 
+  const isComingSoon = product.status === 'coming-soon' || product.status === 'beta'
+
   return (
     <main className="max-w-5xl mx-auto px-6 py-16">
       <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -38,7 +40,7 @@ export default async function ProductDetailPage({
         </div>
 
         <div>
-          <span className="text-xs uppercase tracking-wider text-blue-400 font-semibold">
+          <span className="text-xs uppercase tracking-wider text-purple-400 font-semibold">
             {product.status || 'Live'}
           </span>
           <h1 className="text-4xl font-bold mt-2 text-white">{product.name}</h1>
@@ -54,19 +56,28 @@ export default async function ProductDetailPage({
             <ul className="mt-6 space-y-2">
               {product.features.map((feature, idx) => (
                 <li key={idx} className="flex items-center text-gray-300 text-sm">
-                  <span className="mr-2 text-blue-500">✓</span> {feature}
+                  <span className="mr-2 text-purple-500">✓</span> {feature}
                 </li>
               ))}
             </ul>
           )}
 
           <div className="mt-8">
-            <Link
-              href={`/contact?product=${encodeURIComponent(product.name)}`}
-              className="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-            >
-              Direct Bestellen / Aanvragen
-            </Link>
+            {isComingSoon ? (
+              <div>
+                <p className="text-sm text-gray-400 font-medium mb-2">
+                  Dit product is momenteel in ontwikkeling. Schrijf je in voor vroege toegang:
+                </p>
+                <WaitlistForm productName={product.name} />
+              </div>
+            ) : (
+              <a
+                href={`/contact?product=${encodeURIComponent(product.name)}`}
+                className="inline-block w-full text-center bg-purple-600 hover:bg-purple-500 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+              >
+                Aanvragen / Bestellen
+              </a>
+            )}
           </div>
         </div>
       </div>

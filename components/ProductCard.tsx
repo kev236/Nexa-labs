@@ -31,7 +31,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
       
       <h3 className="text-xl font-semibold text-white mb-3">{product.name}</h3>
-      <p className="text-gray-400 text-sm leading-relaxed mb-8 flex-grow">
+      <p className="text-gray-400 text-sm leading-relaxed mb-8 grow">
         {product.description}
       </p>
       

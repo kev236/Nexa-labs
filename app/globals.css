@@ -1,14 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* Kleuren configureren voor Tailwind v4 */
+  --color-background: #050505;
+  --color-foreground: #ffffff;
+  
+  --color-accent: #8b5cf6;
+  --color-accent-dark: #7c3aed;
+  
+  --color-surface: #121212;
+  --color-surfaceBorder: #27272a;
+
+  /* Font koppelen */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
 
 :root {
   color-scheme: dark;
 }
 
 body {
-  background-color: #050505;
-  color: #ffffff;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -18,10 +31,10 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: var(--color-background);
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: var(--color-surfaceBorder);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {

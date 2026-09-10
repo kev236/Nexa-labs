@@ -1,4 +1,4 @@
-import { products } from "@/data/products";
+import { getProducts } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import FadeIn from "@/components/FadeIn";
 
@@ -7,7 +7,9 @@ export const metadata = {
   description: "Explore the growing ecosystem of software products by Nexa Labs.",
 };
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const products = await getProducts();
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-20 min-h-screen">
       <FadeIn>

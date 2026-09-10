@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { products } from "@/data/products";
+import { getProducts } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import FadeIn from "@/components/FadeIn";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getProducts();
+
   return (
     <>
       {/* Hero Section */}

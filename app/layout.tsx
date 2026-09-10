@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
       <body className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}>
         <Navbar />
-        <main className="flex-grow pt-20">
+        <main className="grow pt-20">
           {children}
         </main>
         <Footer />

@@ -1,7 +1,8 @@
 import { client } from '@/lib/sanity'
 
 export interface Product {
-  _id: string
+  id: string
+  _id?: string
   name: string
   slug: string
   description?: string
@@ -16,6 +17,7 @@ export interface Product {
 export async function getProducts(): Promise<Product[]> {
   return await client.fetch(
     `*[_type == "product"] | order(_createdAt desc) {
+      "id": _id,
       _id,
       name,
       "slug": slug.current,
@@ -32,6 +34,7 @@ export async function getProducts(): Promise<Product[]> {
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   return await client.fetch(
     `*[_type == "product" && slug.current == $slug][0] {
+      "id": _id,
       _id,
       name,
       "slug": slug.current,

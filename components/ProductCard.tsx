@@ -1,46 +1,28 @@
-"use client";
+import { Product } from '@/data/products'
+import * as Icons from 'lucide-react'
+import Link from 'next/link'
 
-import Link from "next/link";
-import { ArrowRight, FileText, Mail, Activity, LucideIcon } from "lucide-react";
-import { Product } from "@/data/products";
-import { motion } from "framer-motion";
+interface ProductCardProps {
+  product: Product
+}
 
-const iconMap: Record<Product['iconName'], LucideIcon> = {
-  FileText,
-  Mail,
-  Activity,
-};
-
-export default function ProductCard({ product }: { product: Product }) {
-  const Icon = iconMap[product.iconName] || FileText;
+export default function ProductCard({ product }: ProductCardProps) {
+  const iconName = product.iconName || 'Activity'
+  const IconComponent = (Icons as Record<string, any>)[iconName] || Icons.Activity
 
   return (
-    <motion.div 
-      whileHover={{ y: -5 }}
-      transition={{ duration: 0.2 }}
-      className="group flex flex-col bg-surface border border-surfaceBorder rounded-2xl p-8 h-full relative overflow-hidden"
-    >
-      <div className="absolute top-0 right-0 p-6">
-        <span className="text-xs font-semibold px-3 py-1 bg-surfaceBorder text-gray-300 rounded-full">
-          {product.status}
-        </span>
+    <div className="border border-gray-800 rounded-xl p-6 bg-gray-900/50">
+      <div className="flex items-center space-x-3 mb-4">
+        <IconComponent className="w-6 h-6 text-blue-500" />
+        <h3 className="text-xl font-bold text-white">{product.name}</h3>
       </div>
-      
-      <div className="h-12 w-12 bg-accent/10 text-accent rounded-xl flex items-center justify-center mb-6">
-        <Icon size={24} />
-      </div>
-      
-      <h3 className="text-xl font-semibold text-white mb-3">{product.name}</h3>
-      <p className="text-gray-400 text-sm leading-relaxed mb-8 grow">
-        {product.description}
-      </p>
-      
-      <Link 
+      <p className="text-gray-400 text-sm mb-4">{product.description}</p>
+      <Link
         href={`/products/${product.slug}`}
-        className="inline-flex items-center text-sm font-medium text-white group-hover:text-accent transition-colors"
+        className="text-blue-400 text-sm font-medium hover:underline"
       >
-        Learn more <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+        Bekijk product →
       </Link>
-    </motion.div>
-  );
+    </div>
+  )
 }

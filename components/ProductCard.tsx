@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FileText, Mail, Activity, LucideIcon } from "lucide-react";
 import { Product } from "@/data/products";
 import { motion } from "framer-motion";
 
+const iconMap: Record<Product['iconName'], LucideIcon> = {
+  FileText,
+  Mail,
+  Activity,
+};
+
 export default function ProductCard({ product }: { product: Product }) {
-  const Icon = product.icon;
+  const Icon = iconMap[product.iconName] || FileText;
 
   return (
     <motion.div 

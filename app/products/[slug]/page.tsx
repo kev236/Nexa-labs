@@ -2,7 +2,13 @@ import { products } from "@/data/products";
 import { notFound } from "next/navigation";
 import FadeIn from "@/components/FadeIn";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, FileText, Mail, Activity, LucideIcon } from "lucide-react";
+
+const iconMap: Record<string, LucideIcon> = {
+  FileText,
+  Mail,
+  Activity,
+};
 
 export async function generateStaticParams() {
   return products.map((product) => ({
@@ -22,7 +28,7 @@ export default async function ProductPage({
     notFound();
   }
 
-  const Icon = product.icon;
+  const Icon = iconMap[product.iconName] || FileText;
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-20 min-h-screen">

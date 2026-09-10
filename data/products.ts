@@ -1,12 +1,10 @@
-import { FileText, Mail, Activity, LucideIcon } from 'lucide-react';
-
 export type Product = {
   id: string;
   slug: string;
   name: string;
   description: string;
   status: 'Coming soon' | 'Live' | 'Beta';
-  icon: LucideIcon;
+  iconName: 'FileText' | 'Mail' | 'Activity';
 };
 
 export const products: Product[] = [
@@ -16,7 +14,7 @@ export const products: Product[] = [
     name: 'QuoteFlow',
     description: 'Create professional business quotes in seconds.',
     status: 'Coming soon',
-    icon: FileText,
+    iconName: 'FileText',
   },
   {
     id: 'prod_2',
@@ -24,7 +22,7 @@ export const products: Product[] = [
     name: 'InvoiceChaser',
     description: 'Make following up on unpaid invoices effortless.',
     status: 'Coming soon',
-    icon: Mail,
+    iconName: 'Mail',
   },
   {
     id: 'prod_3',
@@ -32,6 +30,6 @@ export const products: Product[] = [
     name: 'SiteAudit',
     description: "Understand what's holding your website back.",
     status: 'Coming soon',
-    icon: Activity,
+    iconName: 'Activity',
   },
 ];

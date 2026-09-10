@@ -1,69 +1,75 @@
-import { getProducts, getProductBySlug } from "@/data/products";
-import { notFound } from "next/navigation";
-import FadeIn from "@/components/FadeIn";
-import Link from "next/link";
-import { ArrowLeft, FileText, Mail, Activity, LucideIcon } from "lucide-react";
-
-const iconMap: Record<string, LucideIcon> = {
-  FileText,
-  Mail,
-  Activity,
-};
+import { getProductBySlug, getProducts } from '@/data/products'
+import { urlFor } from '@/lib/sanity'
+import Image from 'next/image'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((product) => ({
-    slug: product.slug,
-  }));
+  const products = await getProducts()
+  return products.map((product) => ({ slug: product.slug }))
 }
 
-export default async function ProductPage({
+export default async function ProductDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>
 }) {
-  const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const { slug } = await params
+  const product = await getProductBySlug(slug)
 
   if (!product) {
-    notFound();
+    notFound()
   }
 
-  const Icon = iconMap[product.iconName] || FileText;
-
   return (
-    <div className="max-w-4xl mx-auto px-6 py-20 min-h-screen">
-      <FadeIn>
-        <Link href="/products" className="inline-flex items-center text-sm text-gray-400 hover:text-white mb-12 transition-colors">
-          <ArrowLeft size={16} className="mr-2" /> Back to Products
-        </Link>
-        
-        <div className="flex items-center gap-6 mb-8">
-          <div className="h-16 w-16 bg-accent/10 text-accent rounded-2xl flex items-center justify-center">
-            <Icon size={32} />
-          </div>
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold">{product.name}</h1>
-            <span className="inline-block mt-2 text-sm font-semibold px-3 py-1 bg-surface text-gray-300 rounded-full border border-surfaceBorder">
-              Status: {product.status}
+    <main className="max-w-5xl mx-auto px-6 py-16">
+      <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          {product.image && (
+            <div className="relative h-80 w-full rounded-2xl overflow-hidden border border-gray-800">
+              <Image
+                src={urlFor(product.image).url()}
+                alt={product.name}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+        </div>
+
+        <div>
+          <span className="text-xs uppercase tracking-wider text-blue-400 font-semibold">
+            {product.status || 'Live'}
+          </span>
+          <h1 className="text-4xl font-bold mt-2 text-white">{product.name}</h1>
+          <p className="text-gray-400 mt-4">{product.description}</p>
+
+          <div className="mt-6">
+            <span className="text-3xl font-extrabold text-white">
+              {product.price ? `€${product.price}` : 'Op aanvraag'}
             </span>
           </div>
-        </div>
 
-        <p className="text-2xl text-gray-300 mb-12">
-          {product.description}
-        </p>
+          {product.features && product.features.length > 0 && (
+            <ul className="mt-6 space-y-2">
+              {product.features.map((feature, idx) => (
+                <li key={idx} className="flex items-center text-gray-300 text-sm">
+                  <span className="mr-2 text-blue-500">✓</span> {feature}
+                </li>
+              ))}
+            </ul>
+          )}
 
-        <div className="bg-surface border border-surfaceBorder rounded-2xl p-12 text-center">
-          <h2 className="text-2xl font-bold mb-4">Coming Soon</h2>
-          <p className="text-gray-400 mb-8 max-w-md mx-auto">
-            We are currently building and refining this product. Check back soon for early access.
-          </p>
-          <button disabled className="px-6 py-3 bg-white/10 text-gray-400 rounded-md font-semibold cursor-not-allowed">
-            Join Waitlist (Coming Soon)
-          </button>
+          <div className="mt-8">
+            <Link
+              href={`/contact?product=${encodeURIComponent(product.name)}`}
+              className="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+            >
+              Direct Bestellen / Aanvragen
+            </Link>
+          </div>
         </div>
-      </FadeIn>
-    </div>
-  );
+      </div>
+    </main>
+  )
 }

@@ -21,7 +21,7 @@ export const product = defineType({
         ],
       },
     }),
-    defineField({ name: 'icon', title: 'Icooenaam (Lucide Icon)', type: 'string' }),
+    defineField({ name: 'iconName', title: 'Icoonnaam (Lucide Icon)', type: 'string' }),
     defineField({ name: 'image', title: 'Afbeelding', type: 'image', options: { hotspot: true } }),
     defineField({
       name: 'features',

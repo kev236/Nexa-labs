@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import SpotlightCard from './SpotlightCard'
 
-type ToolKey = 'siteaudit' | 'quoteflow' | 'invoicechaser'
+type ActionKey = 'latency' | 'scale' | 'security'
 
 export default function InteractiveDemo() {
-  const [activeTool, setActiveTool] = useState<ToolKey>('siteaudit')
+  const [activeAction, setActiveAction] = useState<ActionKey>('latency')
   const [isRunning, setIsRunning] = useState(false)
   const [output, setOutput] = useState<string | null>(null)
 
@@ -16,41 +16,41 @@ export default function InteractiveDemo() {
 
     setTimeout(() => {
       setIsRunning(false)
-      if (activeTool === 'siteaudit') {
-        setOutput('🔍 Lighthouse: 99/100 | OG Tags: Verified | WCAG 2.1: Compliant | 0 Broken Links')
-      } else if (activeTool === 'quoteflow') {
-        setOutput('📄 Proposal #QF-8092 Generated | e-Signature: Active | Stripe Deposit Link: Ready')
+      if (activeAction === 'latency') {
+        setOutput('⚡ Global Edge Latency: 14ms | Status: Optimal')
+      } else if (activeAction === 'scale') {
+        setOutput('📈 Multi-tenant isolated node auto-scaled to 10k req/sec')
       } else {
-        setOutput('⚡ Escalation Triggered: Invoice #INV-1049 | Reminded via API | Late Fee +2.5% Applied')
+        setOutput('🛡️ Zero-Trust authentication & stateless token verified')
       }
-    }, 700)
+    }, 600)
   }
 
   return (
-    <SpotlightCard className="p-6 md:p-8 rounded-2xl border border-zinc-800/80 bg-zinc-900/50 backdrop-blur-xl">
+    <SpotlightCard className="p-6 md:p-8 rounded-2xl border border-zinc-800/80 bg-zinc-900/40 backdrop-blur-xl">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-zinc-800/60 pb-4">
         <div>
-          <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">
-            Live Architecture Sandbox
+          <span className="text-[10px] font-mono text-purple-400 uppercase tracking-widest bg-purple-950/40 border border-purple-500/20 px-2.5 py-1 rounded-md">
+            Architecture Sandbox
           </span>
-          <h3 className="text-xl font-bold text-zinc-100">Test Nexa Micro-Tools</h3>
+          <h3 className="text-lg font-bold text-zinc-100 mt-2">Nexa Modular Core Engine</h3>
         </div>
 
         <div className="flex bg-zinc-950 p-1 rounded-lg border border-zinc-800">
-          {(['siteaudit', 'quoteflow', 'invoicechaser'] as ToolKey[]).map((tool) => (
+          {(['latency', 'scale', 'security'] as ActionKey[]).map((action) => (
             <button
-              key={tool}
+              key={action}
               onClick={() => {
-                setActiveTool(tool)
+                setActiveAction(action)
                 setOutput(null)
               }}
               className={`px-3 py-1.5 text-xs font-mono rounded-md transition-colors ${
-                activeTool === tool
-                  ? 'bg-purple-600 text-white font-semibold shadow-[0_0_10px_rgba(168,85,247,0.4)]'
+                activeAction === action
+                  ? 'bg-purple-600 text-white font-semibold'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
-              {tool === 'siteaudit' ? 'SiteAudit' : tool === 'quoteflow' ? 'QuoteFlow' : 'InvoiceChaser'}
+              {action.toUpperCase()}
             </button>
           ))}
         </div>
@@ -62,15 +62,15 @@ export default function InteractiveDemo() {
             <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block" />
             <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block" />
             <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block" />
-            <span className="ml-2 text-zinc-400">~/nexa-cli --exec {activeTool}</span>
+            <span className="ml-2 text-zinc-400">~/nexa-labs --test {activeAction}</span>
           </div>
 
           <p className="text-zinc-300">
-            &gt; Executing {activeTool} edge micro-service...
+            &gt; Initializing micro-service protocol test...
           </p>
 
           {isRunning && (
-            <p className="text-purple-400 animate-pulse">&gt; Processing payload on global edge nodes...</p>
+            <p className="text-purple-400 animate-pulse">&gt; Executing micro-task on global network...</p>
           )}
 
           {output && (
@@ -86,7 +86,7 @@ export default function InteractiveDemo() {
             disabled={isRunning}
             className="px-4 py-2 bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-bold font-mono rounded-lg transition-all disabled:opacity-50 cursor-pointer"
           >
-            {isRunning ? 'Running Diagnostics...' : 'Run Simulation'}
+            {isRunning ? 'Testing...' : 'Run Test'}
           </button>
         </div>
       </div>

@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missende verplichte velden' }, { status: 400 })
     }
 
-    // Sanity opslag (fail-safe)
+    // 1. Sanity opslag (fail-safe)
     try {
       const { writeClient } = await import('@/lib/sanity.server')
       if (writeClient) {
@@ -30,17 +30,43 @@ export async function POST(request: Request) {
       console.warn('Sanity write skipped:', sanityErr)
     }
 
-    // Resend e-mails
+    // 2. Resend Notificaties
     if (resend) {
-      // 1. Bevestiging naar de KLANT
+      // INKOMEND BERICHT NAAR JOUW INBOX (support@nexalabs.tech)
+      const adminEmail = await resend.emails.send({
+        from: 'Nexa Contact Form <support@nexalabs.tech>',
+        to: 'support@nexalabs.tech',
+        replyTo: email,
+        subject: `[${(inquiryType || 'CONTACT').toUpperCase()}] ${subject || 'Bericht van'} ${name}`,
+        html: `
+          <div style="font-family: monospace; padding: 24px; background-color: #050505; color: #f4f4f5; border: 1px solid #27272a; border-radius: 12px;">
+            <h2 style="color: #a855f7; margin-bottom: 16px;">Nieuw Contactbericht Ontvangen</h2>
+            <p><strong>Naam:</strong> ${name}</p>
+            <p><strong>E-mailadres:</strong> <a href="mailto:${email}" style="color: #c084fc;">${email}</a></p>
+            <p><strong>Type aanvraag:</strong> ${inquiryType || 'general'}</p>
+            <p><strong>Onderwerp:</strong> ${subject || 'Geen onderwerp'}</p>
+            <hr style="border-color: #27272a; margin: 20px 0;" />
+            <p><strong>Bericht:</strong></p>
+            <div style="background-color: #09090b; padding: 16px; border-radius: 8px; border: 1px solid #18181b; white-space: pre-wrap; color: #e4e4e7;">${message}</div>
+            <br/>
+            <p style="font-size: 11px; color: #71717a;">Tip: Klik op 'Beantwoorden' in je e-mailprogramma om direct te antwoorden aan ${email}.</p>
+          </div>
+        `,
+      })
+
+      if (adminEmail.error) {
+        console.error('Resend Admin Email Error:', adminEmail.error)
+      }
+
+      // ONTVANGSTBEVESTIGING NAAR DE KLANT
       const clientEmail = await resend.emails.send({
         from: 'Nexa Labs <support@nexalabs.tech>',
         to: email,
-        subject: `Ontvangstbevestiging: ${subject || 'Contactbericht'}`,
+        subject: `Ontvangstbevestiging: ${subject || 'Contactbericht Nexa Labs'}`,
         html: `
           <div style="font-family: monospace; padding: 24px; background-color: #050505; color: #f4f4f5; border: 1px solid #27272a; border-radius: 12px;">
             <p>Beste ${name},</p>
-            <p>Bedankt voor je bericht aan Nexa Labs. We hebben je bericht in goede orde ontvangen en reageren zo snel mogelijk.</p>
+            <p>Bedankt voor je bericht aan Nexa Labs. We hebben je aanvraag in goede orde ontvangen en reageren zo snel mogelijk (meestal binnen 12 uur).</p>
             <br/>
             <p style="color: #a1a1aa; font-size: 12px;">Met vriendelijke groet,<br/><strong>Team Nexa Labs</strong></p>
           </div>
@@ -50,26 +76,6 @@ export async function POST(request: Request) {
       if (clientEmail.error) {
         console.error('Resend Client Email Error:', clientEmail.error)
       }
-
-      // 2. Bericht naar support@nexalabs.tech
-      await resend.emails.send({
-        from: 'Nexa Contact Form <support@nexalabs.tech>',
-        to: 'support@nexalabs.tech',
-        replyTo: email,
-        subject: `[CONTACT] ${subject || 'Bericht'} van ${name}`,
-        html: `
-          <div style="font-family: monospace; padding: 20px; background-color: #050505; color: #f4f4f5;">
-            <h3>Nieuw contactbericht via de website</h3>
-            <p><strong>Naam:</strong> ${name}</p>
-            <p><strong>E-mail:</strong> ${email}</p>
-            <p><strong>Type:</strong> ${inquiryType || 'general'}</p>
-            <p><strong>Onderwerp:</strong> ${subject || 'Geen'}</p>
-            <hr style="border-color: #27272a; margin: 15px 0;" />
-            <p><strong>Bericht:</strong></p>
-            <p style="white-space: pre-wrap;">${message}</p>
-          </div>
-        `,
-      })
     }
 
     return NextResponse.json({ success: true })

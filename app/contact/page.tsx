@@ -8,25 +8,39 @@ type InquiryType = 'general' | 'support' | 'partnership'
 
 export default function ContactPage() {
   const [inquiryType, setInquiryType] = useState<InquiryType>('general')
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.email || !formData.message) return
+    if (!formData.name || !formData.email || !formData.message) return
 
     setStatus('loading')
-    setTimeout(() => {
-      setStatus('success')
-      setFormData({ name: '', email: '', message: '' })
-    }, 800)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          inquiryType,
+        }),
+      })
+
+      if (res.ok) {
+        setStatus('success')
+        setFormData({ name: '', email: '', subject: '', message: '' })
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
     <div className="pt-32 pb-24 px-6 max-w-6xl mx-auto w-full min-h-screen">
       <FadeIn direction="up">
         <div className="grid lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column: Direct Info & Communication Channels */}
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-4">
               <span className="text-[10px] font-mono tracking-widest text-purple-400 uppercase border border-purple-500/30 bg-purple-950/40 px-3 py-1 rounded-full inline-block">
@@ -73,7 +87,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Right Column: Upgraded Interactive Form */}
           <div className="lg:col-span-7 p-8 md:p-10 rounded-3xl border border-zinc-800/80 bg-zinc-900/30 backdrop-blur-md">
             {status === 'success' ? (
               <div className="text-center py-12 space-y-4">
@@ -119,10 +132,11 @@ export default function ContactPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label htmlFor="name" className="block text-xs font-mono text-zinc-400">Name</label>
+                    <label htmlFor="name" className="block text-xs font-mono text-zinc-400">Name *</label>
                     <input
                       id="name"
                       type="text"
+                      required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Jane Doe"
@@ -144,6 +158,18 @@ export default function ContactPage() {
                 </div>
 
                 <div className="space-y-2">
+                  <label htmlFor="subject" className="block text-xs font-mono text-zinc-400">Subject</label>
+                  <input
+                    id="subject"
+                    type="text"
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    placeholder="How can we help?"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 text-sm focus:outline-none focus:border-purple-500 font-mono placeholder:text-zinc-600"
+                  />
+                </div>
+
+                <div className="space-y-2">
                   <label htmlFor="message" className="block text-xs font-mono text-zinc-400">Message *</label>
                   <textarea
                     id="message"
@@ -155,6 +181,12 @@ export default function ContactPage() {
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 text-sm focus:outline-none focus:border-purple-500 font-mono placeholder:text-zinc-600 resize-y"
                   />
                 </div>
+
+                {status === 'error' && (
+                  <p className="text-red-400 font-mono text-xs">
+                    Failed to send message. Please try again or email support@nexalabs.tech directly.
+                  </p>
+                )}
 
                 <button
                   type="submit"

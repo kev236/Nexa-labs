@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missende verplichte velden' }, { status: 400 })
     }
 
-    // Probeer Sanity op te slaan zonder dat een fout de e-mail blokkeert
+    // Sanity opslag (fail-safe)
     try {
       const { writeClient } = await import('@/lib/sanity.server')
       if (writeClient) {
@@ -27,22 +27,33 @@ export async function POST(request: Request) {
         })
       }
     } catch (sanityErr) {
-      console.warn('Sanity write skipped/failed:', sanityErr)
+      console.warn('Sanity write skipped:', sanityErr)
     }
 
-    // Verstuur e-mail via Resend
+    // Resend e-mails
     if (resend) {
-      // Bevestiging naar de klant
-      await resend.emails.send({
-        from: 'Nexa Labs <onboarding@resend.dev>',
+      // 1. Bevestiging naar de KLANT
+      const clientEmail = await resend.emails.send({
+        from: 'Nexa Labs <support@nexalabs.tech>',
         to: email,
         subject: `Ontvangstbevestiging: ${subject || 'Contactbericht'}`,
-        html: `<p>Beste ${name},</p><p>Bedankt voor je bericht aan Nexa Labs. We hebben je bericht in goede orde ontvangen en reageren zo snel mogelijk.</p><br/><p>Met vriendelijke groet,<br/><strong>Team Nexa Labs</strong></p>`,
+        html: `
+          <div style="font-family: monospace; padding: 24px; background-color: #050505; color: #f4f4f5; border: 1px solid #27272a; border-radius: 12px;">
+            <p>Beste ${name},</p>
+            <p>Bedankt voor je bericht aan Nexa Labs. We hebben je bericht in goede orde ontvangen en reageren zo snel mogelijk.</p>
+            <br/>
+            <p style="color: #a1a1aa; font-size: 12px;">Met vriendelijke groet,<br/><strong>Team Nexa Labs</strong></p>
+          </div>
+        `,
       })
 
-      // Notificatie naar support@nexalabs.tech
+      if (clientEmail.error) {
+        console.error('Resend Client Email Error:', clientEmail.error)
+      }
+
+      // 2. Bericht naar support@nexalabs.tech
       await resend.emails.send({
-        from: 'Nexa Contact Form <onboarding@resend.dev>',
+        from: 'Nexa Contact Form <support@nexalabs.tech>',
         to: 'support@nexalabs.tech',
         replyTo: email,
         subject: `[CONTACT] ${subject || 'Bericht'} van ${name}`,

@@ -157,6 +157,25 @@ export default async function ProductDetailPage({
           </FadeIn>
         </div>
       </div>
+      {/* JSON-LD Structured Data for Google */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: product.name,
+            description: product.description,
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'Web',
+            offers: {
+              '@type': 'Offer',
+              price: product.price || '0',
+              priceCurrency: 'EUR',
+            },
+          }),
+        }}
+      />
     </div>
   )
 }

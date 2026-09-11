@@ -1,39 +1,32 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import './globals.css'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import BackgroundGlow from '@/components/BackgroundGlow'
+import CommandPalette from '@/components/CommandPalette'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+export const metadata = {
+  title: 'Nexa Labs — Autonomous Micro-Software Ecosystem',
+  description: 'We build focused, hyper-efficient tools designed to eliminate friction.',
+}
 
-export const metadata: Metadata = {
-  title: "Nexa Labs — Small software. Big impact.",
-  description: "Nexa Labs builds simple software products that solve real-world problems.",
-  openGraph: {
-    title: "Nexa Labs",
-    description: "Small software. Big impact.",
-    url: "https://nexalabs.com",
-    siteName: "Nexa Labs",
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Nexa Labs",
-    description: "Small software. Big impact.",
-  },
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
-      <body className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}>
+    <html lang="nl">
+      <body className="relative min-h-screen flex flex-col justify-between">
+        <BackgroundGlow />
+        <CommandPalette />
         <Navbar />
-        <main className="grow pt-20">
-          {children}
-        </main>
+        <main className="flex-grow">{children}</main>
         <Footer />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
-  );
+  )
 }

@@ -1,59 +1,35 @@
-'use client'
-
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
-  const pathname = usePathname()
-
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Products', href: '/products' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
-    { name: 'Changelog', href: '/changelog' },
-  ]
-
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-xl bg-black/60 border-b border-white/10 transition-all">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-zinc-950/70 border-b border-zinc-800/60 transition-colors">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-bold text-white tracking-wider text-lg">
-          <div className="w-7 h-7 rounded-lg bg-linear-to-br from-purple-500 to-purple-800 flex items-center justify-center text-xs font-mono text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-500 to-indigo-600 flex items-center justify-center font-bold text-white text-sm shadow-[0_0_12px_rgba(168,85,247,0.3)] group-hover:scale-105 transition-transform">
             N
           </div>
-          NEXA LABS
+          <span className="font-bold tracking-wider text-sm text-zinc-100 group-hover:text-purple-300 transition-colors">
+            NEXA LABS
+          </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1 bg-white/3 border border-white/10 px-3 py-1.5 rounded-full backdrop-blur-md">
-          {navLinks.map((link) => {
-            const isActive =
-              link.href === '/'
-                ? pathname === '/'
-                : pathname.startsWith(link.href)
-
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all ${
-                  isActive
-                    ? 'bg-purple-600/30 text-white border border-purple-500/40 shadow-sm'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {link.name}
-              </Link>
-            )
-          })}
+        <nav className="flex items-center gap-6 text-xs font-mono text-zinc-400">
+          <Link href="/#products" className="hover:text-zinc-100 transition-colors">
+            Products
+          </Link>
+          <Link href="/blog" className="hover:text-zinc-100 transition-colors">
+            Blog
+          </Link>
+          <Link href="/changelog" className="hover:text-zinc-100 transition-colors">
+            Changelog
+          </Link>
+          <Link
+            href="/#products"
+            className="hidden sm:inline-flex px-3.5 py-1.5 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-300 font-medium transition-all"
+          >
+            Access Suite
+          </Link>
         </nav>
-
-        <Link
-          href="/products"
-          className="hidden sm:inline-flex text-xs font-medium bg-white text-black hover:bg-gray-200 px-4 py-2 rounded-full transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_25px_rgba(255,255,255,0.3)]"
-        >
-          View Products
-        </Link>
       </div>
     </header>
   )

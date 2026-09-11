@@ -54,11 +54,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable} data-scroll-behavior="smooth">
-      <body className="bg-black text-white min-h-screen font-sans antialiased selection:bg-purple-500/30 selection:text-purple-200">
-        <Navbar />
-        <main>{children}</main>
+      <body className="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-purple-500/20 selection:text-purple-200">
+        <div className="fixed inset-0 ambient-glow pointer-events-none z-0" />
+        <div className="relative z-10 flex flex-col min-h-screen">
+          <Navbar />
+          <main className="grow">{children}</main>
+        </div>
 
-        {/* Vercel Tracking */}
         <Analytics />
         <SpeedInsights />
       </body>

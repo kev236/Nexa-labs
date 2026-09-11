@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity'
-import { EnvelopeIcon } from '@sanity/icons'
+import { EnvelopeIcon } from '@sanity/icons/Envelope'
 
 export const contactMessage = defineType({
   name: 'contactMessage',

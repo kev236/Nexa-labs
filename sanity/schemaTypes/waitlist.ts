@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity'
-import { UsersIcon } from '@sanity/icons'
+import { UsersIcon } from '@sanity/icons/Users'
 
 export const waitlist = defineType({
   name: 'waitlist',

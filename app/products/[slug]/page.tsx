@@ -1,4 +1,4 @@
-import { getProductBySlug, getProducts } from '@/data/products'
+import { getProductBySlug, getProducts, Product } from '@/data/products'
 import { urlFor } from '@/lib/sanity'
 import WaitlistForm from '@/components/WaitlistForm'
 import SpotlightCard from '@/components/SpotlightCard'
@@ -8,8 +8,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
-  const products = await getProducts()
-  return products.map((product) => ({ slug: product.slug }))
+  const products: Product[] = await getProducts()
+  return products.map((product: Product) => ({ slug: product.slug }))
 }
 
 export default async function ProductDetailPage({
@@ -74,7 +74,7 @@ export default async function ProductDetailPage({
                   Key Capabilities
                 </span>
                 <ul className="grid sm:grid-cols-2 gap-3">
-                  {product.features.map((feature, idx) => (
+                  {product.features.map((feature: string, idx: number) => (
                     <li
                       key={idx}
                       className="flex items-center text-gray-300 text-sm bg-white/3 border border-white/5 p-3 rounded-xl"

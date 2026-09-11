@@ -1,11 +1,11 @@
 import { MetadataRoute } from 'next'
-import { getProducts } from '@/data/products'
+import { getProducts, Product } from '@/data/products'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://nexalabs-taupe.vercel.app'
-  const products = await getProducts()
+  const products: Product[] = await getProducts()
 
-  const productUrls = products.map((product) => ({
+  const productUrls = products.map((product: Product) => ({
     url: `${baseUrl}/products/${product.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,

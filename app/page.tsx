@@ -3,11 +3,11 @@ import FadeIn from '@/components/FadeIn'
 import HeroVisual from '@/components/HeroVisual'
 import ProductCard from '@/components/ProductCard'
 import SpotlightCard from '@/components/SpotlightCard'
-import { getProducts } from '@/data/products'
+import { getProducts, Product } from '@/data/products'
 import Link from 'next/link'
 
 export default async function HomePage() {
-  const products = await getProducts()
+  const products: Product[] = await getProducts()
 
   return (
     <div className="space-y-36 pb-24 overflow-hidden">
@@ -76,8 +76,8 @@ export default async function HomePage() {
         </FadeIn>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {products.map((product, index) => (
-            <FadeIn key={product.id || index} delay={index * 0.1} direction="up">
+          {products.map((product: Product, index: number) => (
+            <FadeIn key={product._id || product.id || index} delay={index * 0.1} direction="up">
               <ProductCard product={product} />
             </FadeIn>
           ))}

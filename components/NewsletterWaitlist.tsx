@@ -18,7 +18,7 @@ export default function NewsletterWaitlist() {
   }
 
   return (
-    <div className="p-8 md:p-12 rounded-3xl border border-purple-500/20 bg-gradient-to-b from-purple-950/20 to-zinc-950 text-center max-w-3xl mx-auto relative overflow-hidden">
+    <div className="p-8 md:p-12 rounded-3xl border border-purple-500/20 bg-linear-to-b from-purple-950/20 to-zinc-950 text-center max-w-3xl mx-auto relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-purple-500/10 blur-3xl pointer-events-none rounded-full" />
 
       <span className="text-[10px] font-mono tracking-widest text-purple-400 uppercase border border-purple-500/30 bg-purple-950/40 px-3 py-1 rounded-full inline-block mb-4">

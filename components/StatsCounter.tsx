@@ -15,7 +15,7 @@ export default function StatsCounter() {
           {stats.map((stat, index) => (
             <FadeIn key={index} delay={index * 0.1} direction="up">
               <div className="text-center space-y-1">
-                <div className="text-3xl md:text-4xl font-extrabold font-mono tracking-tight bg-gradient-to-r from-purple-300 via-indigo-200 to-purple-400 bg-clip-text text-transparent">
+                <div className="text-3xl md:text-4xl font-extrabold font-mono tracking-tight bg-linear-to-r from-purple-300 via-indigo-200 to-purple-400 bg-clip-text text-transparent">
                   {stat.value}
                 </div>
                 <div className="text-xs font-mono text-zinc-500 uppercase tracking-wider">

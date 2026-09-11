@@ -3,6 +3,7 @@ import { urlFor } from '@/lib/sanity'
 import WaitlistForm from '@/components/WaitlistForm'
 import SpotlightCard from '@/components/SpotlightCard'
 import FadeIn from '@/components/FadeIn'
+import CheckoutButton from '@/components/CheckoutButton'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -101,18 +102,26 @@ export default async function ProductDetailPage({
                   </p>
                   <WaitlistForm productName={product.name} />
                 </div>
-              ) : (
+                ) : (
                 <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">Deploy for Your Organization</h3>
+                  <h3 className="text-xl font-bold text-white">Get Instant Access</h3>
                   <p className="text-gray-400 text-sm">
-                    Contact us for direct licensing or custom integration requirements.
+                    Unlock the full capabilities of {product.name} today. One-time payment, lifetime access.
                   </p>
-                  <Link
-                    href={`/contact?product=${encodeURIComponent(product.name)}`}
-                    className="inline-block bg-purple-600 hover:bg-purple-500 text-white font-medium py-3.5 px-8 rounded-full transition-all shadow-[0_0_25px_rgba(168,85,247,0.3)]"
-                  >
-                    Get in Touch / Request Access
-                  </Link>
+                  {product.price ? (
+                    <CheckoutButton 
+                      productName={product.name} 
+                      productSlug={product.slug} 
+                      price={product.price} 
+                    />
+                  ) : (
+                    <Link
+                      href={`/contact?product=${encodeURIComponent(product.name)}`}
+                      className="inline-block bg-purple-600 hover:bg-purple-500 text-white font-medium py-3.5 px-8 rounded-full transition-all shadow-[0_0_25px_rgba(168,85,247,0.3)]"
+                    >
+                      Contact for Pricing
+                    </Link>
+                  )}
                 </div>
               )}
             </SpotlightCard>

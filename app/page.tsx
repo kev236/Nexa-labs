@@ -22,11 +22,15 @@ export default async function HomePage() {
           </span>
 
           <h1 className="text-4xl md:text-6xl font-extrabold text-zinc-100 tracking-tight leading-tight max-w-4xl mx-auto mb-6">
-            Autonomous Micro-Tools to Audit, Propose &amp; <span className="bg-linear-to-r from-purple-300 via-indigo-200 to-purple-400 bg-clip-text text-transparent">Collect Payment</span>
+            Autonomous Micro-Tools to Audit, Propose &amp;{' '}
+            <span className="bg-gradient-to-r from-purple-300 via-indigo-200 to-purple-400 bg-clip-text text-transparent">
+              Collect Payment
+            </span>
           </h1>
 
           <p className="text-zinc-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
-            Nexa Labs replaces manual overhead with high-performance micro-utilities engineered for modern digital workflows.
+            Nexa Labs replaces manual overhead with high-performance
+            micro-utilities engineered for modern digital workflows.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -70,31 +74,36 @@ export default async function HomePage() {
         </FadeIn>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {products.map((product: Product, index: number) => (
-            <FadeIn key={product._id} delay={index * 0.1} direction="up">
-              <Link href={`/products/${product.slug}`}>
-                <SpotlightCard className="h-full flex flex-col justify-between p-6 rounded-2xl border border-zinc-800/80 bg-zinc-900/30 hover:border-purple-500/40 transition-colors">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-mono text-purple-300 bg-purple-950/50 border border-purple-500/30 px-2.5 py-1 rounded-md">
-                        {product.category}
-                      </span>
-                      <span className="text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-2 py-0.5 rounded">
-                        {product.status}
-                      </span>
+          {products.map((product: Product, index: number) => {
+            const key = product.id || product._id || product.slug || index
+            return (
+              <FadeIn key={key} delay={index * 0.1} direction="up">
+                <Link href={`/products/${product.slug}`}>
+                  <SpotlightCard className="h-full flex flex-col justify-between p-6 rounded-2xl border border-zinc-800/80 bg-zinc-900/30 hover:border-purple-500/40 transition-colors">
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-xs font-mono text-purple-300 bg-purple-950/50 border border-purple-500/30 px-2.5 py-1 rounded-md">
+                          {product.category}
+                        </span>
+                        <span className="text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-2 py-0.5 rounded">
+                          {product.status}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-zinc-100 mb-2">
+                        {product.title}
+                      </h3>
+                      <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3 mb-6">
+                        {product.description}
+                      </p>
                     </div>
-                    <h3 className="text-lg font-bold text-zinc-100 mb-2">{product.title}</h3>
-                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3 mb-6">
-                      {product.description}
-                    </p>
-                  </div>
-                  <span className="text-xs font-mono text-purple-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    View Specifications &rarr;
-                  </span>
-                </SpotlightCard>
-              </Link>
-            </FadeIn>
-          ))}
+                    <span className="text-xs font-mono text-purple-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      View Specifications &rarr;
+                    </span>
+                  </SpotlightCard>
+                </Link>
+              </FadeIn>
+            )
+          })}
         </div>
       </section>
 

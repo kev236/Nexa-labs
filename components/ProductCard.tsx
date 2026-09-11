@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import SpotlightCard from '@/components/SpotlightCard'
 import { Product } from '@/data/products'
+import { FileText, Receipt, Search, Box } from 'lucide-react'
 
 interface ProductCardProps {
   product: Product
@@ -8,7 +9,19 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const title = product.title || product.name || 'Product'
-  const productId = product._id || product.id || product.slug
+
+  const getIcon = (name: string) => {
+    switch (name) {
+      case 'file-text':
+        return <FileText size={24} className="text-purple-400" />
+      case 'receipt':
+        return <Receipt size={24} className="text-purple-400" />
+      case 'search':
+        return <Search size={24} className="text-purple-400" />
+      default:
+        return <Box size={24} className="text-purple-400" />
+    }
+  }
 
   return (
     <Link href={`/products/${product.slug}`}>

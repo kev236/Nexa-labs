@@ -4,6 +4,7 @@ import ProductCard from '@/components/ProductCard'
 import InteractiveDemo from '@/components/InteractiveDemo'
 import StatsCounter from '@/components/StatsCounter'
 import NewsletterWaitlist from '@/components/NewsletterWaitlist'
+import FAQ from '@/components/FAQ'
 import { getProducts, Product } from '@/data/products'
 
 export const revalidate = 60
@@ -119,6 +120,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ SECTION */}
+      <FAQ />
 
       {/* NEWSLETTER / EARLY ACCESS */}
       <section className="max-w-4xl mx-auto px-6 w-full">

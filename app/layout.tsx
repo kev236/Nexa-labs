@@ -3,48 +3,36 @@ import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import './globals.css'
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-})
-
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexalabs.tech'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Nexa Labs | Premium Micro-Software Ecosystem',
+    default: 'Nexa Labs — Small software. Big impact.',
     template: '%s | Nexa Labs',
   },
   description:
-    'Autonomous, high-performance micro-software tools engineered for efficiency and clean digital workflows.',
-  keywords: [
-    'SaaS',
-    'Micro-Software',
-    'Next.js',
-    'Sanity CMS',
-    'Nexa Labs',
-    'Productivity Tools',
-  ],
-  authors: [{ name: 'Nexa Labs' }],
-  creator: 'Nexa Labs',
+    'Nexa Labs builds simple software products that solve real-world problems.',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: baseUrl,
-    title: 'Nexa Labs | Premium Micro-Software Ecosystem',
+    title: 'Nexa Labs — Small software. Big impact.',
     description:
-      'Autonomous, high-performance micro-software tools engineered for efficiency and clean digital workflows.',
+      'Nexa Labs builds simple software products that solve real-world problems.',
     siteName: 'Nexa Labs',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Nexa Labs | Premium Micro-Software Ecosystem',
+    title: 'Nexa Labs — Small software. Big impact.',
     description:
-      'Autonomous, high-performance micro-software tools engineered for efficiency and clean digital workflows.',
+      'Nexa Labs builds simple software products that solve real-world problems.',
   },
+  robots: { index: true, follow: true },
 }
 
 export default function RootLayout({
@@ -54,13 +42,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable} data-scroll-behavior="smooth">
-      <body className="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-purple-500/20 selection:text-purple-200">
-        <div className="fixed inset-0 ambient-glow pointer-events-none z-0" />
-        <div className="relative z-10 flex flex-col min-h-screen">
-          <Navbar />
-          <main className="grow">{children}</main>
-        </div>
+      <body className="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-purple-500/20 selection:text-purple-200 flex flex-col">
+        <Navbar />
+        <main className="grow">{children}</main>
+        <Footer />
 
+        {/* Vercel Analytics & Speed Insights */}
         <Analytics />
         <SpeedInsights />
       </body>

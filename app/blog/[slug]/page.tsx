@@ -6,6 +6,7 @@ import { Metadata } from 'next'
 import { getPostBySlug } from '@/data/blog'
 import { urlFor } from '@/sanity/lib/image'
 import FadeIn from '@/components/FadeIn'
+import { ptComponents } from '@/components/PortableTextComponents'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -94,8 +95,8 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         )}
 
-        <div className="prose prose-invert max-w-none prose-p:text-gray-300 prose-p:leading-relaxed prose-headings:text-white prose-a:text-purple-400 hover:prose-a:text-purple-300 prose-strong:text-white prose-code:text-purple-300 prose-code:bg-white/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded">
-          {post.body && <PortableText value={post.body} />}
+        <div className="max-w-none">
+          {post.body && <PortableText value={post.body} components={ptComponents} />}
         </div>
       </FadeIn>
     </article>

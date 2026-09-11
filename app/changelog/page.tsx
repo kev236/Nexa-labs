@@ -1,5 +1,6 @@
 import { client } from '@/sanity/lib/client'
 import { PortableText } from '@portabletext/react'
+import { ptComponents } from '@/components/PortableTextComponents'
 
 export const revalidate = 60
 
@@ -48,8 +49,8 @@ export default async function ChangelogPage() {
               </div>
 
               <h2 className="text-2xl font-bold text-white mb-4">{log.title}</h2>
-              <div className="text-gray-300 space-y-4 leading-relaxed max-w-3xl prose-p:text-gray-300 prose-a:text-purple-400 prose-strong:text-white">
-                {log.content && <PortableText value={log.content} />}
+              <div className="text-gray-300 leading-relaxed max-w-3xl">
+                {log.content && <PortableText value={log.content} components={ptComponents} />}
               </div>
             </div>
           ))}

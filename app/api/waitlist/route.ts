@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
     if (resend) {
       await resend.emails.send({
-        from: 'Nexa Labs <onboarding@resend.dev>',
+        from: 'Nexa Labs <hello@nexalabs.tech>',
         to: email,
         subject: `Je staat op de wachtlijst voor ${productName || 'Nexa Labs'}`,
         html: `<p>Bedankt voor je interesse in <strong>${productName || 'Nexa Labs'}</strong>!</p><p>Je staat nu officieel geregistreerd voor vroege toegang. We sturen je een update zodra er een bètaversie beschikbaar is.</p>`,

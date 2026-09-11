@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
     if (resend) {
       await resend.emails.send({
-        from: 'Nexa Labs <onboarding@resend.dev>',
+        from: 'Nexa Labs <hello@nexalabs.tech>',
         to: email,
         subject: `Ontvangstbevestiging: ${subject || 'Contactbericht'}`,
         html: `<p>Beste ${name},</p><p>Bedankt voor je bericht aan Nexa Labs. We hebben je bericht in goede orde ontvangen en reageren zo snel mogelijk.</p><br/><p>Met vriendelijke groet,<br/><strong>Team Nexa Labs</strong></p>`,

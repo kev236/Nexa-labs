@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missende verplichte velden' }, { status: 400 })
     }
 
-    // 1. Opslaan in Sanity CMS
+    // 1. Opslaan in Sanity CMS (fail-safe)
     try {
       const { writeClient } = await import('@/lib/sanity.server')
       if (writeClient) {
@@ -39,12 +39,13 @@ export async function POST(request: Request) {
       console.warn('Sanity opslag overgeslagen:', sanityErr)
     }
 
-    // 2. Bericht vanuit het formulier versturen naar support@nexalabs.tech
+    // 2. Verstuur het contactbericht naar jouw ECHTE werkende inbox (Gmail/Workspace)
+    // Pas 'to' aan naar de inbox die je dagelijks opent.
     const adminEmail = await resend.emails.send({
       from: 'Nexa Contact Form <support@nexalabs.tech>',
-      to: 'support@nexalabs.tech',
-      replyTo: email,
-      subject: `[${(inquiryType || 'CONTACT').toUpperCase()}] ${subject || 'Nieuw bericht van'} ${name}`,
+      to: 'kevin.mlocek2007@gmail.com', // <-- Pas dit aan naar je werkende e-mailinbox
+      replyTo: email, // Als je op 'Beantwoorden' klikt in je mail, antwoord je direct de klant
+      subject: `[${(inquiryType || 'CONTACT').toUpperCase()}] ${subject || 'Bericht van'} ${name}`,
       html: `
         <div style="font-family: monospace; padding: 24px; background-color: #050505; color: #f4f4f5; border: 1px solid #27272a; border-radius: 12px;">
           <h2 style="color: #a855f7; margin-bottom: 16px;">Nieuw Contactbericht Ontvangen</h2>
@@ -60,7 +61,7 @@ export async function POST(request: Request) {
     })
 
     if (adminEmail.error) {
-      console.error('Resend Fout bij verzenden naar support:', adminEmail.error)
+      console.error('Resend Fout:', adminEmail.error)
       return NextResponse.json({ error: adminEmail.error.message }, { status: 400 })
     }
 
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
         `,
       })
     } catch (clientErr) {
-      console.warn('Klantbevestiging kon niet worden verzonden:', clientErr)
+      console.warn('Klantbevestiging mislukt:', clientErr)
     }
 
     return NextResponse.json({ success: true })

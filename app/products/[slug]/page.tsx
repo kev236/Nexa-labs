@@ -7,13 +7,18 @@ import { ArrowLeft, CheckCircle2, Zap, Shield, Cpu } from 'lucide-react'
 
 export const revalidate = 60
 
+type Props = {
+  params: Promise<{ slug: string }>
+}
+
 export async function generateStaticParams() {
   const products = await getProducts()
   return products.map((p) => ({ slug: p.slug }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const product = await getProductBySlug(params.slug)
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params
+  const product = await getProductBySlug(slug)
   if (!product) return { title: 'Product Not Found' }
 
   return {
@@ -22,8 +27,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
-  const product = await getProductBySlug(params.slug)
+export default async function ProductDetailPage({ params }: Props) {
+  const { slug } = await params
+  const product = await getProductBySlug(slug)
 
   if (!product) {
     notFound()

@@ -1,205 +1,95 @@
 'use client'
 
 import { useState } from 'react'
+import SpotlightCard from './SpotlightCard'
 
-interface InteractiveDemoProps {
-  slug: string
-  productName: string
-}
+type ToolKey = 'speed' | 'seo' | 'tokens'
 
-export default function InteractiveDemo({ slug, productName }: InteractiveDemoProps) {
-  // SiteAudit Demo State
-  const [urlInput, setUrlInput] = useState('')
-  const [auditStatus, setAuditStatus] = useState<'idle' | 'scanning' | 'complete'>('idle')
-  const [scanProgress, setScanProgress] = useState(0)
+export default function InteractiveDemo() {
+  const [activeTool, setActiveTool] = useState<ToolKey>('speed')
+  const [isRunning, setIsRunning] = useState(false)
+  const [output, setOutput] = useState<string | null>(null)
 
-  // QuoteFlow Demo State
-  const [projectType, setProjectType] = useState('SaaS MVP')
-  const [featuresCount, setFeaturesCount] = useState(3)
-  const [estimatedPrice, setEstimatedPrice] = useState(3500)
+  const handleRun = () => {
+    setIsRunning(true)
+    setOutput(null)
 
-  // Handle SiteAudit Scan Simulation
-  const handleStartAudit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!urlInput) return
-
-    setAuditStatus('scanning')
-    setScanProgress(15)
-
-    const interval = setInterval(() => {
-      setScanProgress((prev) => {
-        if (prev >= 95) {
-          clearInterval(interval)
-          setAuditStatus('complete')
-          return 100
-        }
-        return prev + 20
-      })
-    }, 400)
-  }
-
-  // Handle QuoteFlow Slider Change
-  const handleFeatureChange = (val: number) => {
-    setFeaturesCount(val)
-    setEstimatedPrice(1500 + val * 650)
+    setTimeout(() => {
+      setIsRunning(false)
+      if (activeTool === 'speed') {
+        setOutput('⚡ Latency: 18ms | Edge Cache: HIT | Status: 200 OK (Optimized)')
+      } else if (activeTool === 'seo') {
+        setOutput('🔍 Metadata: Valid | OG Tags: Detected | Score: 98/100')
+      } else {
+        setOutput('🧮 Prompt Tokens: 142 | Output Tokens: 38 | Est. Cost: $0.0002')
+      }
+    }, 800)
   }
 
   return (
-    <div className="border border-purple-500/20 bg-black/40 backdrop-blur-xl rounded-2xl p-6 md:p-8 space-y-6">
-      <div className="flex items-center justify-between border-b border-white/10 pb-4">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse" />
-          <h3 className="text-sm font-mono text-purple-300 uppercase tracking-wider">
-            Interactive Live Sandbox — {productName}
-          </h3>
+    <SpotlightCard className="p-6 md:p-8 rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
+        <div>
+          <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">
+            Interactive Sandbox
+          </span>
+          <h3 className="text-xl font-bold text-white">Try Nexa Labs Architecture</h3>
         </div>
-        <span className="text-[11px] font-mono text-gray-500 bg-white/5 px-2.5 py-1 rounded-md">
-          SIMULATOR
-        </span>
+
+        <div className="flex bg-white/5 p-1 rounded-lg border border-white/10">
+          {(['speed', 'seo', 'tokens'] as ToolKey[]).map((tool) => (
+            <button
+              key={tool}
+              onClick={() => {
+                setActiveTool(tool)
+                setOutput(null)
+              }}
+              className={`px-3 py-1.5 text-xs font-mono rounded-md transition-colors ${
+                activeTool === tool
+                  ? 'bg-purple-600 text-white font-semibold'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              {tool === 'speed' ? 'Latency Checker' : tool === 'seo' ? 'SEO Audit' : 'Token Estimator'}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* DEMO 1: SITEAUDIT (SEO / PERFORMANCE SCANNER) */}
-      {slug === 'siteaudit' && (
-        <div className="space-y-6">
-          {auditStatus === 'idle' && (
-            <form onSubmit={handleStartAudit} className="space-y-4">
-              <label className="block text-xs font-mono text-gray-400">
-                ENTER YOUR WEBSITE URL TO RUN A REAL-TIME PREVIEW SCAN:
-              </label>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="url"
-                  required
-                  placeholder="https://yourwebsite.com"
-                  value={urlInput}
-                  onChange={(e) => setUrlInput(e.target.value)}
-                  className="grow bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                />
-                <button
-                  type="submit"
-                  className="bg-purple-600 hover:bg-purple-500 text-white font-medium px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] text-sm whitespace-nowrap"
-                >
-                  Run Instant Audit
-                </button>
-              </div>
-            </form>
-          )}
-
-          {auditStatus === 'scanning' && (
-            <div className="space-y-4 py-4">
-              <div className="flex justify-between text-xs font-mono text-gray-400">
-                <span>Analyzing DOM tree, LCP, CLS & OpenGraph metadata...</span>
-                <span>{scanProgress}%</span>
-              </div>
-              <div className="w-full bg-white/5 h-2.5 rounded-full overflow-hidden border border-white/10">
-                <div
-                  className="bg-purple-500 h-full transition-all duration-300"
-                  style={{ width: `${scanProgress}%` }}
-                />
-              </div>
-            </div>
-          )}
-
-          {auditStatus === 'complete' && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
-                  <div className="text-2xl font-bold text-emerald-400">94/100</div>
-                  <div className="text-[11px] font-mono text-gray-400 mt-1">SEO Health</div>
-                </div>
-                <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
-                  <div className="text-2xl font-bold text-yellow-400">78/100</div>
-                  <div className="text-[11px] font-mono text-gray-400 mt-1">Performance</div>
-                </div>
-                <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-xl">
-                  <div className="text-2xl font-bold text-purple-400">3 Issues</div>
-                  <div className="text-[11px] font-mono text-gray-400 mt-1">Found</div>
-                </div>
-              </div>
-
-              <div className="p-4 bg-purple-950/30 border border-purple-500/30 rounded-xl flex items-center justify-between gap-4">
-                <div className="text-xs text-gray-300">
-                  <span className="font-semibold text-white">Full report generated!</span> Get automated weekly audits for <span className="text-purple-300 font-mono">{urlInput}</span>.
-                </div>
-                <button
-                  onClick={() => {
-                    document.getElementById('waitlist-section')?.scrollIntoView({ behavior: 'smooth' })
-                  }}
-                  className="bg-white text-black font-semibold text-xs px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap"
-                >
-                  Unlock Full Report
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* DEMO 2: QUOTEFLOW (AUTOMATED PROPOSAL CALCULATOR) */}
-      {slug === 'quoteflow' && (
-        <div className="space-y-6">
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-xs font-mono text-gray-400">PROJECT SCOPE</label>
-              <select
-                value={projectType}
-                onChange={(e) => setProjectType(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500"
-              >
-                <option value="SaaS MVP" className="bg-gray-900">SaaS Web Application</option>
-                <option value="Mobile App" className="bg-gray-900">Mobile Native App</option>
-                <option value="AI Workflow" className="bg-gray-900">AI Automation Tool</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-mono text-gray-400">
-                MODULES / INTEGRATIONS ({featuresCount})
-              </label>
-              <input
-                type="range"
-                min="1"
-                max="8"
-                value={featuresCount}
-                onChange={(e) => handleFeatureChange(Number(e.target.value))}
-                className="w-full accent-purple-500 cursor-pointer mt-3"
-              />
-            </div>
+      <div className="font-mono text-xs bg-zinc-950 p-4 rounded-xl border border-white/5 min-h-30 flex flex-col justify-between">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-gray-500">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block" />
+            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block" />
+            <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block" />
+            <span className="ml-2 text-gray-400">~/nexa-cli --run {activeTool}</span>
           </div>
 
-          <div className="p-4 bg-white/3 border border-white/10 rounded-xl flex items-center justify-between">
-            <div>
-              <div className="text-xs font-mono text-gray-400">ESTIMATED PROPOSAL VALUE</div>
-              <div className="text-2xl font-bold text-white mt-0.5">€{estimatedPrice.toLocaleString()}</div>
-            </div>
-            <button
-              onClick={() => {
-                document.getElementById('waitlist-section')?.scrollIntoView({ behavior: 'smooth' })
-              }}
-              className="bg-purple-600 hover:bg-purple-500 text-white font-medium text-xs px-5 py-2.5 rounded-xl transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)]"
-            >
-              Generate Live Quote PDF
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* DEMO 3: GENERIC FALLBACK FOR OTHER PRODUCTS */}
-      {slug !== 'siteaudit' && slug !== 'quoteflow' && (
-        <div className="p-6 bg-white/3 border border-white/5 rounded-xl text-center space-y-4">
-          <p className="text-sm text-gray-400">
-            Interactive sandbox for <strong>{productName}</strong> is currently compiling in our preview environment.
+          <p className="text-gray-300">
+            &gt; Executing {activeTool} diagnostic on global Edge nodes...
           </p>
+
+          {isRunning && (
+            <p className="text-purple-400 animate-pulse">&gt; Processing payload...</p>
+          )}
+
+          {output && (
+            <p className="text-emerald-400 font-semibold bg-emerald-950/30 p-2 rounded border border-emerald-500/20">
+              {output}
+            </p>
+          )}
+        </div>
+
+        <div className="mt-4 flex justify-end">
           <button
-            onClick={() => {
-              document.getElementById('waitlist-section')?.scrollIntoView({ behavior: 'smooth' })
-            }}
-            className="inline-block text-xs font-mono text-purple-400 hover:text-purple-300 underline"
+            onClick={handleRun}
+            disabled={isRunning}
+            className="px-4 py-2 bg-white text-black hover:bg-gray-200 text-xs font-bold font-mono rounded-lg transition-all disabled:opacity-50"
           >
-            Get early beta access to test this product →
+            {isRunning ? 'Running...' : 'Execute Test'}
           </button>
         </div>
-      )}
-    </div>
+      </div>
+    </SpotlightCard>
   )
 }

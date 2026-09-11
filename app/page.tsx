@@ -1,144 +1,107 @@
-import BentoGrid from '@/components/BentoGrid'
-import FadeIn from '@/components/FadeIn'
-import HeroVisual from '@/components/HeroVisual'
-import ProductCard from '@/components/ProductCard'
-import SpotlightCard from '@/components/SpotlightCard'
-import { getProducts, Product } from '@/data/products'
 import Link from 'next/link'
+import FadeIn from '@/components/FadeIn'
+import SpotlightCard from '@/components/SpotlightCard'
+import SocialProof from '@/components/SocialProof'
+import InteractiveDemo from '@/components/InteractiveDemo'
+import { getProducts, Product } from '@/data/products'
+
+export const revalidate = 60
 
 export default async function HomePage() {
-  const products: Product[] = await getProducts()
+  const products = await getProducts().catch(() => [])
 
   return (
-    <div className="space-y-36 pb-24 overflow-hidden">
-      {/* HERO SECTION */}
-      <section className="pt-20 md:pt-32 max-w-6xl mx-auto px-6 grid lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-7 space-y-8">
-          <FadeIn direction="up">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/30 text-purple-300 text-xs font-mono tracking-wide">
-              <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
-              NEXA LABS ECOSYSTEM
-            </div>
-          </FadeIn>
-
-          <FadeIn direction="up" delay={0.1}>
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-gradient leading-[1.1]">
-              Small software. <br />
-              <span className="text-gradient-purple">Big impact.</span>
-            </h1>
-          </FadeIn>
-
-          <FadeIn direction="up" delay={0.2}>
-            <p className="text-gray-400 text-lg md:text-xl max-w-xl font-normal leading-relaxed">
-              We build focused, hyper-efficient tools designed to eliminate friction and solve single problems exceptionally well.
-            </p>
-          </FadeIn>
-
-          <FadeIn direction="up" delay={0.3}>
-            <div className="flex flex-wrap gap-4 pt-2">
-              <Link
-                href="/products"
-                className="bg-white hover:bg-gray-200 text-black font-semibold px-7 py-3.5 rounded-full transition-all duration-200 shadow-[0_0_25px_rgba(255,255,255,0.2)] hover:shadow-[0_0_35px_rgba(255,255,255,0.35)]"
-              >
-                Explore Products
-              </Link>
-              <Link
-                href="/about"
-                className="border border-white/10 hover:border-white/20 bg-white/3 text-gray-300 font-medium px-7 py-3.5 rounded-full backdrop-blur-md transition-all duration-200"
-              >
-                About Nexa Labs
-              </Link>
-            </div>
-          </FadeIn>
-        </div>
-
-        <div className="lg:col-span-5">
-          <FadeIn direction="none" delay={0.4}>
-            <HeroVisual />
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* PRODUCTS SECTION */}
-      <section className="max-w-6xl mx-auto px-6">
+    <div className="space-y-24 pb-20">
+      {/* Hero Section */}
+      <section className="max-w-6xl mx-auto px-6 pt-20 text-center">
         <FadeIn direction="up">
-          <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
-            <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">
-              Focused Software
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold text-gradient">
-              Built to solve real problems.
-            </h2>
-            <p className="text-gray-400 text-base">
-              Simple to understand, ready to deploy, and engineered for results.
-            </p>
+          <span className="text-xs font-mono tracking-widest text-purple-400 uppercase border border-purple-500/30 bg-purple-950/30 px-3 py-1.5 rounded-full inline-block mb-6">
+            Autonomous Micro-Software Suite
+          </span>
+
+          <h1 className="text-4xl md:text-7xl font-extrabold text-white tracking-tight leading-tight max-w-4xl mx-auto mb-6">
+            Build Faster with High-Performance <span className="bg-linear-to-r from-purple-400 via-purple-200 to-indigo-400 bg-clip-text text-transparent">Micro-Tools</span>
+          </h1>
+
+          <p className="text-gray-400 text-base md:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
+            Eliminate bloat. Nexa Labs provides lightweight, autonomous software modules engineered for maximum velocity and zero-overhead workflows.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="#products"
+              className="w-full sm:w-auto px-8 py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-xl transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] text-sm"
+            >
+              Explore Products &rarr;
+            </Link>
+            <Link
+              href="/changelog"
+              className="w-full sm:w-auto px-8 py-3.5 bg-white/5 hover:bg-white/10 text-gray-300 font-medium rounded-xl border border-white/10 transition-all text-sm"
+            >
+              View System Changelog
+            </Link>
           </div>
         </FadeIn>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {products.map((product: Product, index: number) => (
-            <FadeIn key={product._id || product.id || index} delay={index * 0.1} direction="up">
-              <ProductCard product={product} />
-            </FadeIn>
-          ))}
-        </div>
       </section>
 
-      {/* HOW NEXA LABS WORKS */}
-      <section className="max-w-6xl mx-auto px-6">
+      {/* Interactive Sandbox Section */}
+      <section className="max-w-4xl mx-auto px-6">
         <FadeIn direction="up">
-          <div className="text-center max-w-xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">
-              Methodology
-            </span>
+          <InteractiveDemo />
+        </FadeIn>
+      </section>
+
+      {/* Social Proof Bar */}
+      <SocialProof />
+
+      {/* Product Showcase */}
+      <section id="products" className="max-w-6xl mx-auto px-6 space-y-12">
+        <FadeIn direction="up">
+          <div className="text-center max-w-2xl mx-auto space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-white">
-              We build. We test. We improve.
+              Engineered Ecosystem
             </h2>
-          </div>
-        </FadeIn>
-
-        <BentoGrid />
-      </section>
-
-      {/* VISION STATEMENT */}
-      <section className="max-w-5xl mx-auto px-6">
-        <FadeIn direction="up">
-          <SpotlightCard className="text-center py-16 px-8 relative overflow-hidden">
-            <div className="max-w-2xl mx-auto space-y-4">
-              <span className="text-xs font-mono uppercase tracking-widest text-purple-400">
-                Ecosystem Vision
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gradient">
-                One problem at a time.
-              </h2>
-              <p className="text-gray-400 leading-relaxed">
-                We are steadily building an ecosystem of focused, high-performance software products — each designed to execute a single workflow flawlessly.
-              </p>
-            </div>
-          </SpotlightCard>
-        </FadeIn>
-      </section>
-
-      {/* FINAL CTA */}
-      <section className="max-w-6xl mx-auto px-6 text-center">
-        <FadeIn direction="up">
-          <div className="space-y-6">
-            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-              Ready to streamline your workflow?
-            </h2>
-            <p className="text-gray-400 max-w-lg mx-auto">
-              Discover the growing suite of tools from Nexa Labs.
+            <p className="text-gray-400 text-sm md:text-base">
+              Precision-crafted tools designed to operate independently or integrate into your existing tech stack.
             </p>
-            <div>
-              <Link
-                href="/products"
-                className="inline-block bg-purple-600 hover:bg-purple-500 text-white font-medium px-8 py-3.5 rounded-full transition-all duration-200 shadow-[0_0_30px_rgba(168,85,247,0.4)]"
-              >
-                Explore Products
-              </Link>
-            </div>
           </div>
         </FadeIn>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.map((product: Product, index: number) => {
+            const item = product as Product & { title?: string; name?: string; category?: string }
+            const title = item.title || item.name || 'Product'
+            const category = item.category || 'Micro-Tool'
+
+            return (
+              <FadeIn key={item._id} delay={index * 0.1} direction="up">
+                <Link href={`/products/${item.slug}`}>
+                  <SpotlightCard className="h-full flex flex-col justify-between p-6 hover:border-purple-500/50 transition-colors">
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-xs font-mono text-purple-400 bg-purple-950/40 border border-purple-500/20 px-2.5 py-1 rounded-md">
+                          {category}
+                        </span>
+                        {item.status && (
+                          <span className="text-xs font-mono text-gray-500">
+                            {item.status}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+                      <p className="text-sm text-gray-400 line-clamp-3 mb-6">
+                        {item.description}
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-purple-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      View Specifications &rarr;
+                    </span>
+                  </SpotlightCard>
+                </Link>
+              </FadeIn>
+            )
+          })}
+        </div>
       </section>
     </div>
   )

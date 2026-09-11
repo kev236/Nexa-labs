@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 
 interface FadeInProps {
   children: ReactNode
-  direction?: 'up' | 'down' | 'left' | 'right'
+  direction?: 'up' | 'down' | 'left' | 'right' | 'none'
   delay?: number
   className?: string
 }
@@ -23,9 +23,9 @@ export default function FadeIn({
     down: { y: -20, x: 0 },
     left: { x: 20, y: 0 },
     right: { x: -20, y: 0 },
+    none: { x: 0, y: 0 },
   }
 
-  // Als de gebruiker verminderde beweging eist, sla de animatie over
   if (shouldReduceMotion) {
     return <div className={className}>{children}</div>
   }

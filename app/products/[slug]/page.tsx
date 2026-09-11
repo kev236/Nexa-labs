@@ -1,97 +1,99 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { Metadata } from 'next'
-import { getProductBySlug } from '@/data/products'
 import FadeIn from '@/components/FadeIn'
-import WaitlistForm from '@/components/WaitlistForm'
-
-type Props = {
-  params: Promise<{ slug: string }>
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const product = await getProductBySlug(slug)
-
-  if (!product) {
-    return {
-      title: 'Product Not Found — Nexa Labs',
-    }
-  }
-
-  const title = (product as any).title || (product as any).name || 'Product'
-
-  return {
-    title: `${title} — Nexa Labs`,
-    description: product.description,
-    openGraph: {
-      title,
-      description: product.description,
-    },
-  }
-}
+import ProductWaitlistForm from '@/components/ProductWaitlistForm'
+import { getProductBySlug, getProducts } from '@/data/products'
+import { ArrowLeft, CheckCircle2, Zap, Shield, Cpu } from 'lucide-react'
 
 export const revalidate = 60
 
-export default async function ProductDetailPage({ params }: Props) {
-  const { slug } = await params
-  const product = await getProductBySlug(slug)
+export async function generateStaticParams() {
+  const products = await getProducts()
+  return products.map((p) => ({ slug: p.slug }))
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const product = await getProductBySlug(params.slug)
+  if (!product) return { title: 'Product Not Found' }
+
+  return {
+    title: `${product.title} — Nexa Labs`,
+    description: product.description,
+  }
+}
+
+export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
+  const product = await getProductBySlug(params.slug)
 
   if (!product) {
     notFound()
   }
 
-  const item = product as any
-  const title = item.title || item.name || 'Product'
-  const category = item.category || 'Micro-Tool'
-
   return (
-    <div className="max-w-4xl mx-auto px-6 py-20 min-h-screen space-y-12">
+    <div className="pt-32 pb-24 px-6 max-w-5xl mx-auto w-full min-h-screen space-y-16">
       <FadeIn direction="up">
         <Link
-          href="/#products"
-          className="inline-flex items-center gap-2 text-xs font-mono text-purple-400 hover:text-purple-300 mb-8 transition-colors"
+          href="/products"
+          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-500 hover:text-purple-400 transition-colors mb-8"
         >
-          &larr; Back to Ecosystem
+          <ArrowLeft size={14} /> Back to Ecosystem
         </Link>
 
-        <header className="space-y-4 mb-10">
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-mono text-purple-400 bg-purple-950/40 border border-purple-500/20 px-3 py-1 rounded-full uppercase tracking-wider">
-              {category}
-            </span>
-            {item.status && (
-              <span className="text-xs font-mono bg-white/5 border border-white/10 text-gray-400 px-2.5 py-1 rounded-md">
-                {item.status}
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-7 space-y-6">
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] font-mono tracking-widest uppercase px-3 py-1 rounded-full bg-purple-950/50 border border-purple-500/30 text-purple-300">
+                {product.category}
               </span>
+              <span className="text-[10px] font-mono tracking-widest uppercase px-2.5 py-0.5 rounded bg-emerald-950/40 border border-emerald-500/20 text-emerald-400">
+                {product.status}
+              </span>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl font-extrabold text-zinc-100 tracking-tight">
+              {product.title}
+            </h1>
+
+            <p className="text-zinc-400 text-base md:text-lg leading-relaxed">
+              {product.description}
+            </p>
+
+            {product.features && product.features.length > 0 && (
+              <div className="pt-6 border-t border-zinc-800/80 space-y-3">
+                <h3 className="text-xs font-mono text-purple-400 uppercase tracking-widest">
+                  Technical Specifications
+                </h3>
+                <div className="grid gap-2.5">
+                  {product.features.map((feature, i) => (
+                    <div key={i} className="flex items-center gap-3 text-xs font-mono text-zinc-300">
+                      <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
+
+            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800/80 text-center font-mono text-[11px]">
+              <div className="p-3 rounded-xl bg-zinc-900/40 border border-zinc-800/60">
+                <Zap className="w-4 h-4 text-purple-400 mx-auto mb-1.5" />
+                <span className="text-zinc-300 block">Sub-15ms Edge</span>
+              </div>
+              <div className="p-3 rounded-xl bg-zinc-900/40 border border-zinc-800/60">
+                <Shield className="w-4 h-4 text-purple-400 mx-auto mb-1.5" />
+                <span className="text-zinc-300 block">Stateless Auth</span>
+              </div>
+              <div className="p-3 rounded-xl bg-zinc-900/40 border border-zinc-800/60">
+                <Cpu className="w-4 h-4 text-purple-400 mx-auto mb-1.5" />
+                <span className="text-zinc-300 block">Zero Overhead</span>
+              </div>
+            </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
-            {title}
-          </h1>
-
-          <p className="text-lg md:text-xl text-gray-400 leading-relaxed">
-            {item.description}
-          </p>
-        </header>
-
-        {item.features && Array.isArray(item.features) && item.features.length > 0 && (
-          <div className="border border-white/10 bg-white/5 rounded-2xl p-6 md:p-8 space-y-4 mb-12">
-            <h2 className="text-lg font-bold font-mono uppercase tracking-wider text-purple-300">
-              Technical Specifications
-            </h2>
-            <ul className="grid sm:grid-cols-2 gap-3 text-sm text-gray-300 font-mono">
-              {item.features.map((feat: string, index: number) => (
-                <li key={index} className="flex items-center gap-2">
-                  <span className="text-purple-400">⚡</span> {feat}
-                </li>
-              ))}
-            </ul>
+          <div className="lg:col-span-5">
+            <ProductWaitlistForm productName={product.title} />
           </div>
-        )}
-
-        <WaitlistForm productName={title} slug={slug} />
+        </div>
       </FadeIn>
     </div>
   )

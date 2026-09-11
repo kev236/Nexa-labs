@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 
 export default function HeroVisual() {
   return (
-    <div className="relative w-full h-[340px] md:h-[400px] flex items-center justify-center overflow-hidden rounded-2xl border border-gray-800/80 bg-gray-950/40 backdrop-blur-sm">
+    <div className="relative w-full h-85 md:h-100 flex items-center justify-center overflow-hidden rounded-2xl border border-gray-800/80 bg-gray-950/40 backdrop-blur-sm">
       <div className="absolute w-72 h-72 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Floating Product Node 1 */}

@@ -5,7 +5,6 @@ export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY
 
   if (!apiKey) {
-    console.error('RESEND_API_KEY ontbreekt in environment variables')
     return NextResponse.json(
       { error: 'Server configuratiefout: RESEND_API_KEY ontbreekt' },
       { status: 500 }
@@ -22,7 +21,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missende verplichte velden' }, { status: 400 })
     }
 
-    // Sanity opslag (optioneel)
+    // Sanity opslag (fail-safe)
     try {
       const { writeClient } = await import('@/lib/sanity.server')
       if (writeClient) {
@@ -40,21 +39,17 @@ export async function POST(request: Request) {
       console.warn('Sanity write overgeslagen:', sanityErr)
     }
 
-    // Gebruik onboarding@resend.dev zolang je domein nog niet geverifieerd is in Resend
-    const fromAddress = process.env.NODE_ENV === 'production' && process.env.VERIFIED_DOMAIN
-      ? 'Nexa Contact Form <support@nexalabs.tech>'
-      : 'Nexa Contact Form <onboarding@resend.dev>'
-
-    const emailResponse = await resend.emails.send({
-      from: fromAddress,
-      to: 'support@nexalabs.tech',
+    // 1. Bericht naar jouw account e-mailadres
+    const adminEmail = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: 'kevin.mlocek2007@gmail.com',
       replyTo: email,
       subject: `[${(inquiryType || 'CONTACT').toUpperCase()}] ${subject || 'Bericht van'} ${name}`,
       html: `
         <div style="font-family: monospace; padding: 24px; background-color: #050505; color: #f4f4f5; border: 1px solid #27272a; border-radius: 12px;">
           <h2 style="color: #a855f7;">Nieuw Contactbericht Ontvangen</h2>
           <p><strong>Naam:</strong> ${name}</p>
-          <p><strong>E-mail:</strong> ${email}</p>
+          <p><strong>E-mail van klant:</strong> ${email}</p>
           <p><strong>Type:</strong> ${inquiryType || 'general'}</p>
           <p><strong>Onderwerp:</strong> ${subject || 'Geen'}</p>
           <hr style="border-color: #27272a; margin: 20px 0;" />
@@ -64,9 +59,21 @@ export async function POST(request: Request) {
       `,
     })
 
-    if (emailResponse.error) {
-      console.error('Resend Fout:', emailResponse.error)
-      return NextResponse.json({ error: emailResponse.error.message }, { status: 400 })
+    if (adminEmail.error) {
+      console.error('Resend Fout:', adminEmail.error)
+      return NextResponse.json({ error: adminEmail.error.message }, { status: 400 })
+    }
+
+    // 2. Bevestiging naar klant (stilzwijgend opvangen als Resend testmodus dit blokkeert)
+    try {
+      await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: email,
+        subject: `Ontvangstbevestiging: ${subject || 'Contactbericht Nexa Labs'}`,
+        html: `<p>Beste ${name},</p><p>Bedankt voor je bericht aan Nexa Labs. We hebben je bericht in goede orde ontvangen.</p>`,
+      })
+    } catch (clientErr) {
+      console.warn('Klantbevestiging overgeslagen door Resend testmodus:', clientErr)
     }
 
     return NextResponse.json({ success: true })

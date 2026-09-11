@@ -9,6 +9,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Products', href: '/products' },
+    { name: 'Blog', href: '/blog' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ]
@@ -25,7 +26,11 @@ export default function Navbar() {
 
         <nav className="hidden md:flex items-center gap-1 bg-white/3 border border-white/10 px-3 py-1.5 rounded-full backdrop-blur-md">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href
+            const isActive =
+              link.href === '/'
+                ? pathname === '/'
+                : pathname.startsWith(link.href)
+
             return (
               <Link
                 key={link.href}

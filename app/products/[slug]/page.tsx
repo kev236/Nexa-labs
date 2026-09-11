@@ -122,7 +122,7 @@ export default async function ProductDetailPage({
         {/* RIGHT PREVIEW GRAPHIC */}
         <div className="lg:col-span-5">
           <FadeIn direction="none" delay={0.3}>
-            <SpotlightCard className="p-6 relative min-h-[380px] flex flex-col justify-between overflow-hidden">
+            <SpotlightCard className="p-6 relative min-h-95 flex flex-col justify-between overflow-hidden">
               <div className="absolute inset-0 bg-purple-600/10 blur-3xl pointer-events-none" />
 
               {product.image ? (

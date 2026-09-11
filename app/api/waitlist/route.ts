@@ -36,10 +36,10 @@ export async function POST(request: Request) {
       console.warn('Sanity write overgeslagen:', sanityErr)
     }
 
-    // 1. Notificatie naar jouw account e-mailadres
+    // 1. Notificatie naar support@nexalabs.tech
     const adminEmail = await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: 'kevin.mlocek2007@gmail.com',
+      from: 'Nexa System <support@nexalabs.tech>',
+      to: 'support@nexalabs.tech',
       subject: `⚡ Nieuwe wachtlijst inschrijving: ${productName || 'Algemeen'}`,
       html: `
         <div style="font-family: monospace; padding: 20px; background-color: #050505; color: #f4f4f5;">
@@ -55,16 +55,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: adminEmail.error.message }, { status: 400 })
     }
 
-    // 2. Bevestiging naar klant (stilzwijgend opvangen als Resend testmodus dit blokkeert)
+    // 2. Bevestiging naar de klant
     try {
       await resend.emails.send({
-        from: 'onboarding@resend.dev',
+        from: 'Nexa Labs <support@nexalabs.tech>',
         to: email,
         subject: `Wachtlijst bevestiging: ${productName || 'Nexa Labs'}`,
         html: `<p>Bedankt voor je interesse in <strong>${productName || 'Nexa Labs'}</strong>!</p><p>Je staat nu op de wachtlijst voor vroege toegang.</p>`,
       })
     } catch (clientErr) {
-      console.warn('Klantbevestiging overgeslagen door Resend testmodus:', clientErr)
+      console.warn('Klantbevestiging mislukt (controleer domeinverificatie in Resend):', clientErr)
     }
 
     return NextResponse.json({ success: true })

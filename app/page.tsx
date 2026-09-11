@@ -2,6 +2,8 @@ import Link from 'next/link'
 import FadeIn from '@/components/FadeIn'
 import ProductCard from '@/components/ProductCard'
 import InteractiveDemo from '@/components/InteractiveDemo'
+import StatsCounter from '@/components/StatsCounter'
+import NewsletterWaitlist from '@/components/NewsletterWaitlist'
 import { getProducts, Product } from '@/data/products'
 
 export const revalidate = 60
@@ -14,7 +16,7 @@ export default async function HomePage() {
       {/* HERO SECTION */}
       <section className="relative min-h-[80vh] flex flex-col justify-center items-center text-center px-6 overflow-hidden">
         <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[600px] h-[600px] bg-purple-900/10 blur-[120px] rounded-full" />
+          <div className="w-150 h-150 bg-purple-900/10 blur-[120px] rounded-full" />
         </div>
 
         <div className="z-10 flex flex-col items-center w-full max-w-4xl">
@@ -61,6 +63,9 @@ export default async function HomePage() {
           <InteractiveDemo />
         </FadeIn>
       </section>
+
+      {/* LIVE STATS COUNTER */}
+      <StatsCounter />
 
       {/* PRODUCTS SECTION */}
       <section id="products" className="py-20 px-6 bg-zinc-950/60 border-y border-zinc-900">
@@ -113,6 +118,13 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* NEWSLETTER / EARLY ACCESS */}
+      <section className="max-w-4xl mx-auto px-6 w-full">
+        <FadeIn direction="up">
+          <NewsletterWaitlist />
+        </FadeIn>
       </section>
 
       {/* VISION SECTION */}

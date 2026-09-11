@@ -5,10 +5,11 @@ import { category } from './category'
 import { testimonial } from './testimonial'
 import { faq } from './faq'
 import { page } from './page'
-import { contactMessage } from './contactMessage' // NIEUW
-import { waitlist } from './waitlist'           // NIEUW
+import { contactMessage } from './contactMessage'
+import { waitlist } from './waitlist'
+import { legal } from './legal' // NIEUW
 
 export const schemaTypes = [
   product, post, author, category, testimonial, faq, page,
-  contactMessage, waitlist // NIEUW
+  contactMessage, waitlist, legal
 ]

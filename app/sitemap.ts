@@ -3,7 +3,7 @@ import { getProducts, Product } from '@/data/products'
 import { getPosts, Post } from '@/data/blog'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexalabs.app'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexalabs.tech'
 
   // Haal alle dynamische data op uit Sanity
   const [products, posts] = await Promise.all([

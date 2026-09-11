@@ -8,8 +8,9 @@ import { page } from './page'
 import { contactMessage } from './contactMessage'
 import { waitlist } from './waitlist'
 import { legal } from './legal' // NIEUW
+import { changelog } from './changelog'
 
 export const schemaTypes = [
   product, post, author, category, testimonial, faq, page,
-  contactMessage, waitlist, legal
+  contactMessage, waitlist, legal, changelog
 ]

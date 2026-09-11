@@ -12,6 +12,7 @@ export default function Navbar() {
     { name: 'Blog', href: '/blog' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
+    { name: 'Changelog', href: '/changelog' },
   ]
 
   return (

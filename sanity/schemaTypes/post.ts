@@ -34,7 +34,19 @@ export const post = defineType({
       name: 'mainImage',
       title: 'Main image',
       type: 'image',
-      options: { hotspot: true },
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text (Alt Text)',
+          description: 'Describe the image content for screen readers and accessibility.',
+          validation: (Rule) =>
+            Rule.required().error('Alt text is required for screen readers.'),
+        }),
+      ],
     }),
     defineField({
       name: 'body',

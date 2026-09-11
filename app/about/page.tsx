@@ -12,22 +12,22 @@ export default function AboutPage() {
     {
       badge: '01',
       title: 'Problem-First Engineering',
-      desc: 'We bouwen geen software om de techniek, maar om specifieke frictiepunten en inefficiënties direct op te lossen.',
+      desc: 'We do not build software for the sake of technology, but to directly solve specific friction points and operational inefficiencies.',
     },
     {
       badge: '02',
       title: 'Zero Friction UI',
-      desc: 'Onze interfaces worden gestript van alle ruis. Een product moet binnen enkele seconden te begrijpen en te gebruiken zijn.',
+      desc: 'Our interfaces are stripped of all noise. A product must be understood and usable within seconds.',
     },
     {
       badge: '03',
       title: 'Ecosystem Architecture',
-      desc: 'Elk product werkt als een autonoom instrument, maar deelt de snelheid, betrouwbaarheid en esthetiek van de Nexa Labs kern.',
+      desc: 'Every product operates as an autonomous tool, sharing the speed, reliability, and design principles of the Nexa Labs core.',
     },
     {
       badge: '04',
       title: 'Relentless Iteration',
-      desc: 'We lancering vroeg, verzamelen echte gebruikerseigen data en verbeteren continue op basis van wat écht impact heeft.',
+      desc: 'We launch early, collect real user feedback, and continuously refine based on what truly drives impact.',
     },
   ]
 
@@ -40,10 +40,10 @@ export default function AboutPage() {
             OUR PURPOSE
           </span>
           <h1 className="text-4xl md:text-6xl font-extrabold text-gradient leading-tight mt-4">
-            Software without the unnecessary complexity.
+            Software without unnecessary complexity.
           </h1>
           <p className="text-gray-400 text-lg md:text-xl font-normal leading-relaxed">
-            Nexa Labs is een onafhankelijke software studio. We ontwikkelen een portfolio van gefocuste tools die ontworpen zijn rondom één basisprincipe: verwijder de frictie en maak het resultaat beter.
+            Nexa Labs is an independent software studio creating a portfolio of focused tools built around one core principle: remove friction and deliver superior results.
           </p>
         </FadeIn>
       </section>
@@ -61,7 +61,7 @@ export default function AboutPage() {
                   Small tools. Autonomous power.
                 </h2>
                 <p className="text-gray-400 text-sm md:text-base leading-relaxed">
-                  In plaats van overladen &quot;all-in-one&quot; platforms te bouwen die traag en ingewikkeld worden, richt Nexa Labs zich op een verzameling hyper-gespecialiseerde micro-producten. Elk product doet exact één ding — uitzonderlijk goed.
+                  Instead of building bloated &quot;all-in-one&quot; platforms that become slow and complex, Nexa Labs focuses on a suite of hyper-specialized micro-products. Each product executes one task — exceptionally well.
                 </p>
               </div>
               <div className="md:col-span-4 flex justify-center">
@@ -79,9 +79,9 @@ export default function AboutPage() {
         <FadeIn direction="up">
           <div className="text-center max-w-xl mx-auto space-y-2">
             <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">
-              Methodologie
+              Methodology
             </span>
-            <h2 className="text-3xl font-bold text-white">Hoe wij software bouwen.</h2>
+            <h2 className="text-3xl font-bold text-white">How we build software.</h2>
           </div>
         </FadeIn>
 
@@ -106,7 +106,7 @@ export default function AboutPage() {
       <section className="text-center space-y-6">
         <FadeIn direction="up">
           <h2 className="text-2xl md:text-3xl font-bold text-white">
-            Wil je meer weten of samenwerken?
+            Want to learn more or collaborate?
           </h2>
           <div className="pt-2">
             <Link

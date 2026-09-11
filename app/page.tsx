@@ -64,13 +64,13 @@ export default async function HomePage() {
         <FadeIn direction="up">
           <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
             <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">
-              Gefocuste Software
+              Focused Software
             </span>
             <h2 className="text-3xl md:text-5xl font-bold text-gradient">
               Built to solve real problems.
             </h2>
             <p className="text-gray-400 text-base">
-              Eenvoudig te begrijpen, direct inzetbaar en ontworpen voor resultaat.
+              Simple to understand, ready to deploy, and engineered for results.
             </p>
           </div>
         </FadeIn>
@@ -89,7 +89,7 @@ export default async function HomePage() {
         <FadeIn direction="up">
           <div className="text-center max-w-xl mx-auto mb-16 space-y-3">
             <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">
-              Methodologie
+              Methodology
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-white">
               We build. We test. We improve.
@@ -112,7 +112,7 @@ export default async function HomePage() {
                 One problem at a time.
               </h2>
               <p className="text-gray-400 leading-relaxed">
-                We bouwen gestaag aan een ecosysteem van kleine, hoogwaardige softwareproducten — elk ontwikkeld om één specifiek proces vlekkeloos uit te voeren.
+                We are steadily building an ecosystem of focused, high-performance software products — each designed to execute a single workflow flawlessly.
               </p>
             </div>
           </SpotlightCard>
@@ -127,7 +127,7 @@ export default async function HomePage() {
               Ready to streamline your workflow?
             </h2>
             <p className="text-gray-400 max-w-lg mx-auto">
-              Ontdek de groeiende collectie tools van Nexa Labs.
+              Discover the growing suite of tools from Nexa Labs.
             </p>
             <div>
               <Link

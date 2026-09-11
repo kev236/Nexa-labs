@@ -8,7 +8,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata = {
   title: 'Nexa Labs — Autonomous Micro-Software Ecosystem',
-  description: 'We build focused, hyper-efficient tools designed to eliminate friction.',
+  description: 'We build focused, hyper-efficient tools designed to eliminate friction and solve single problems exceptionally well.',
 }
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="nl">
+    <html lang="en">
       <body className="relative min-h-screen flex flex-col justify-between">
         <BackgroundGlow />
         <CommandPalette />

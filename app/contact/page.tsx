@@ -21,7 +21,7 @@ export default function ContactPage() {
               Let&apos;s talk.
             </h1>
             <p className="text-gray-400 text-base leading-relaxed mt-4">
-              Heb je een vraag over een van onze producten, wil je feedback delen of zoek je contact met ons engineering team? Neem direct contact op.
+              Have a question about our products, feedback to share, or looking to collaborate with our engineering team? Reach out directly below.
             </p>
           </FadeIn>
 
@@ -37,7 +37,7 @@ export default function ContactPage() {
 
               <div className="p-4 rounded-xl border border-white/5 bg-white/3 space-y-1">
                 <div className="text-xs font-mono text-gray-400">EXPECTED RESPONSE</div>
-                <div className="text-sm font-medium text-white">Binnen 24 uur op werkdagen</div>
+                <div className="text-sm font-medium text-white">Within 24 hours on business days</div>
               </div>
             </div>
           </FadeIn>

@@ -34,7 +34,7 @@ export default async function ProductDetailPage({
           href="/products"
           className="text-xs font-mono text-gray-400 hover:text-purple-400 transition-colors flex items-center gap-2"
         >
-          ← Terug naar alle producten
+          ← Back to all products
         </Link>
       </FadeIn>
 
@@ -97,21 +97,21 @@ export default async function ProductDetailPage({
                     <h3 className="text-lg font-bold text-white">Join the Early Access List</h3>
                   </div>
                   <p className="text-gray-400 text-sm">
-                    {product.name} is momenteel in actieve ontwikkeling. Vul je e-mailadres in om als eerste toegang te krijgen tot de bètaversie.
+                    {product.name} is currently in active development. Enter your email to be among the first to access the beta version.
                   </p>
                   <WaitlistForm productName={product.name} />
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">Direct inzetten voor jouw organisatie</h3>
+                  <h3 className="text-xl font-bold text-white">Deploy for Your Organization</h3>
                   <p className="text-gray-400 text-sm">
-                    Neem contact op voor een directe licentie of op maat gemaakte integratie.
+                    Contact us for direct licensing or custom integration requirements.
                   </p>
                   <Link
                     href={`/contact?product=${encodeURIComponent(product.name)}`}
                     className="inline-block bg-purple-600 hover:bg-purple-500 text-white font-medium py-3.5 px-8 rounded-full transition-all shadow-[0_0_25px_rgba(168,85,247,0.3)]"
                   >
-                    Aanvragen / Contact
+                    Get in Touch / Request Access
                   </Link>
                 </div>
               )}
@@ -157,25 +157,6 @@ export default async function ProductDetailPage({
           </FadeIn>
         </div>
       </div>
-      {/* JSON-LD Structured Data for Google */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'SoftwareApplication',
-            name: product.name,
-            description: product.description,
-            applicationCategory: 'BusinessApplication',
-            operatingSystem: 'Web',
-            offers: {
-              '@type': 'Offer',
-              price: product.price || '0',
-              priceCurrency: 'EUR',
-            },
-          }),
-        }}
-      />
     </div>
   )
 }

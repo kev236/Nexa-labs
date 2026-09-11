@@ -131,20 +131,6 @@ export default async function HomePage() {
         </FadeIn>
       </section>
 
-      {/* VISION SECTION */}
-      <section className="py-24 px-6 relative overflow-hidden bg-zinc-950 border-t border-zinc-900">
-        <div className="max-w-4xl mx-auto text-center relative z-10 space-y-6">
-          <FadeIn direction="up">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-zinc-100">
-              One problem at a time.
-            </h2>
-            <p className="text-zinc-400 text-lg leading-relaxed max-w-2xl mx-auto">
-              We're building a growing ecosystem of small software products — each designed to solve a specific problem exceptionally well.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
-
       {/* CTA SECTION */}
       <section className="py-16 px-6 text-center pb-24">
         <FadeIn direction="up">

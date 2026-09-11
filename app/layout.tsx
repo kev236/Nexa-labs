@@ -22,7 +22,7 @@ export default function RootLayout({
         <BackgroundGlow />
         <CommandPalette />
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        <main className="grow">{children}</main>
         <Footer />
         <Analytics />
         <SpeedInsights />

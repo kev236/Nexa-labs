@@ -3,7 +3,6 @@ import { urlFor } from '@/lib/sanity'
 import WaitlistForm from '@/components/WaitlistForm'
 import SpotlightCard from '@/components/SpotlightCard'
 import FadeIn from '@/components/FadeIn'
-import CheckoutButton from '@/components/CheckoutButton'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -25,8 +24,6 @@ export default async function ProductDetailPage({
     notFound()
   }
 
-  const isComingSoon = product.status === 'coming-soon' || product.status === 'beta'
-
   return (
     <div className="max-w-6xl mx-auto px-6 py-20 space-y-20">
       {/* BREADCRUMB */}
@@ -44,17 +41,11 @@ export default async function ProductDetailPage({
         <div className="lg:col-span-7 space-y-6">
           <FadeIn direction="up">
             <div className="flex items-center gap-3">
-              <span
-                className={`text-xs font-mono tracking-widest uppercase px-3 py-1 rounded-full border ${
-                  isComingSoon
-                    ? 'border-purple-500/30 bg-purple-500/10 text-purple-300'
-                    : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
-                }`}
-              >
-                ● {product.status || 'Live'}
+              <span className="text-xs font-mono tracking-widest uppercase px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300">
+                ● {product.status || 'Early Access'}
               </span>
               <span className="text-xs font-mono text-gray-500 uppercase">
-                {product.price ? `€${product.price}` : 'Early Access'}
+                Waitlist Open
               </span>
             </div>
 
@@ -72,7 +63,7 @@ export default async function ProductDetailPage({
             <FadeIn direction="up" delay={0.1}>
               <div className="pt-4 space-y-3">
                 <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">
-                  Key Capabilities
+                  Planned Capabilities
                 </span>
                 <ul className="grid sm:grid-cols-2 gap-3">
                   {product.features.map((feature: string, idx: number) => (
@@ -88,42 +79,19 @@ export default async function ProductDetailPage({
             </FadeIn>
           )}
 
-          {/* CONVERSION BOX (WAITLIST / ORDER) */}
+          {/* CONVERSION BOX (WAITLIST) */}
           <FadeIn direction="up" delay={0.2}>
             <SpotlightCard className="p-8 border-purple-500/30 mt-6">
-              {isComingSoon ? (
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
-                    <h3 className="text-lg font-bold text-white">Join the Early Access List</h3>
-                  </div>
-                  <p className="text-gray-400 text-sm">
-                    {product.name} is currently in active development. Enter your email to be among the first to access the beta version.
-                  </p>
-                  <WaitlistForm productName={product.name} />
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
+                  <h3 className="text-lg font-bold text-white">Get Priority Access</h3>
                 </div>
-                ) : (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">Get Instant Access</h3>
-                  <p className="text-gray-400 text-sm">
-                    Unlock the full capabilities of {product.name} today. One-time payment, lifetime access.
-                  </p>
-                  {product.price ? (
-                    <CheckoutButton 
-                      productName={product.name} 
-                      productSlug={product.slug} 
-                      price={product.price} 
-                    />
-                  ) : (
-                    <Link
-                      href={`/contact?product=${encodeURIComponent(product.name)}`}
-                      className="inline-block bg-purple-600 hover:bg-purple-500 text-white font-medium py-3.5 px-8 rounded-full transition-all shadow-[0_0_25px_rgba(168,85,247,0.3)]"
-                    >
-                      Contact for Pricing
-                    </Link>
-                  )}
-                </div>
-              )}
+                <p className="text-gray-400 text-sm">
+                  Be among the first to test <strong>{product.name}</strong> when the next build releases. No spam, only direct product updates and early access invites.
+                </p>
+                <WaitlistForm productName={product.name} />
+              </div>
             </SpotlightCard>
           </FadeIn>
         </div>
@@ -151,10 +119,10 @@ export default async function ProductDetailPage({
                     <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
                     <span className="text-gray-500 text-[10px] ml-auto">{product.slug}.nexa</span>
                   </div>
-                  <div className="text-gray-400">// Status: IN_DEVELOPMENT</div>
-                  <div className="text-purple-400">&gt; Loading modules for {product.name}...</div>
-                  <div className="text-gray-500">&gt; Core engine initialized.</div>
-                  <div className="text-emerald-400">&gt; Ready for early preview.</div>
+                  <div className="text-gray-400">// Status: EARLY_ACCESS_PHASE</div>
+                  <div className="text-purple-400">&gt; Accepting waitlist registrations for {product.name}...</div>
+                  <div className="text-gray-500">&gt; Core architecture in progress.</div>
+                  <div className="text-emerald-400">&gt; Beta invites queued.</div>
                 </div>
               )}
 

@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Geldig e-mailadres verplicht' }, { status: 400 })
     }
 
-    // Sanity opslag (fail-safe)
+    // 1. Sanity opslag (fail-safe)
     try {
       const { writeClient } = await import('@/lib/sanity.server')
       if (writeClient) {
@@ -36,7 +36,23 @@ export async function POST(request: Request) {
       console.warn('Sanity write overgeslagen:', sanityErr)
     }
 
-    // 1. Notificatie naar support@nexalabs.tech
+    // 2. Bevestigingsmail rechtstreeks naar de KLANT
+    const clientEmail = await resend.emails.send({
+      from: 'Nexa Labs <support@nexalabs.tech>',
+      to: email,
+      subject: `Je staat op de wachtlijst voor ${productName || 'Nexa Labs'}`,
+      html: `
+        <div style="font-family: monospace; padding: 24px; background-color: #050505; color: #f4f4f5; border: 1px solid #27272a; border-radius: 12px;">
+          <h2 style="color: #a855f7; margin-bottom: 12px;">Nexa Labs Early Access</h2>
+          <p>Bedankt voor je interesse in <strong>${productName || 'Nexa Labs'}</strong>!</p>
+          <p>Je staat nu officieel geregistreerd voor vroege toegang. We sturen je een update zodra er een bètaversie of release beschikbaar is.</p>
+          <br/>
+          <p style="color: #a1a1aa; font-size: 12px;">Team Nexa Labs — Small software. Big impact.</p>
+        </div>
+      `,
+    })
+
+    // 3. Notificatie naar support@nexalabs.tech
     const adminEmail = await resend.emails.send({
       from: 'Nexa System <support@nexalabs.tech>',
       to: 'support@nexalabs.tech',
@@ -50,21 +66,8 @@ export async function POST(request: Request) {
       `,
     })
 
-    if (adminEmail.error) {
-      console.error('Resend Fout:', adminEmail.error)
-      return NextResponse.json({ error: adminEmail.error.message }, { status: 400 })
-    }
-
-    // 2. Bevestiging naar de klant
-    try {
-      await resend.emails.send({
-        from: 'Nexa Labs <support@nexalabs.tech>',
-        to: email,
-        subject: `Wachtlijst bevestiging: ${productName || 'Nexa Labs'}`,
-        html: `<p>Bedankt voor je interesse in <strong>${productName || 'Nexa Labs'}</strong>!</p><p>Je staat nu op de wachtlijst voor vroege toegang.</p>`,
-      })
-    } catch (clientErr) {
-      console.warn('Klantbevestiging mislukt (controleer domeinverificatie in Resend):', clientErr)
+    if (clientEmail.error || adminEmail.error) {
+      console.error('Resend Mail Error:', clientEmail.error || adminEmail.error)
     }
 
     return NextResponse.json({ success: true })

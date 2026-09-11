@@ -2,6 +2,7 @@ import { getProductBySlug, getProducts, Product } from '@/data/products'
 import { urlFor } from '@/lib/sanity'
 import WaitlistForm from '@/components/WaitlistForm'
 import SpotlightCard from '@/components/SpotlightCard'
+import InteractiveDemo from '@/components/InteractiveDemo'
 import FadeIn from '@/components/FadeIn'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -78,22 +79,6 @@ export default async function ProductDetailPage({
               </div>
             </FadeIn>
           )}
-
-          {/* CONVERSION BOX (WAITLIST) */}
-          <FadeIn direction="up" delay={0.2}>
-            <SpotlightCard className="p-8 border-purple-500/30 mt-6">
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
-                  <h3 className="text-lg font-bold text-white">Get Priority Access</h3>
-                </div>
-                <p className="text-gray-400 text-sm">
-                  Be among the first to test <strong>{product.name}</strong> when the next build releases. No spam, only direct product updates and early access invites.
-                </p>
-                <WaitlistForm productName={product.name} />
-              </div>
-            </SpotlightCard>
-          </FadeIn>
         </div>
 
         {/* RIGHT PREVIEW GRAPHIC */}
@@ -133,6 +118,29 @@ export default async function ProductDetailPage({
             </SpotlightCard>
           </FadeIn>
         </div>
+      </div>
+
+      {/* INTERACTIVE DEMO SECTION */}
+      <FadeIn direction="up">
+        <InteractiveDemo slug={product.slug} productName={product.name} />
+      </FadeIn>
+
+      {/* CONVERSION BOX (WAITLIST) */}
+      <div id="waitlist-section">
+        <FadeIn direction="up">
+          <SpotlightCard className="p-8 md:p-10 border-purple-500/30">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
+                <h3 className="text-xl font-bold text-white">Get Priority Access</h3>
+              </div>
+              <p className="text-gray-400 text-sm max-w-xl">
+                Be among the first to access <strong>{product.name}</strong> when the beta opens. Enter your email below to reserve your place.
+              </p>
+              <WaitlistForm productName={product.name} />
+            </div>
+          </SpotlightCard>
+        </FadeIn>
       </div>
     </div>
   )

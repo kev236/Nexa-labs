@@ -57,7 +57,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-zinc-200">Direct Email</h4>
-                  <p className="text-xs font-mono text-purple-300 mt-0.5">hello@nexalabs.tech</p>
+                  <p className="text-xs font-mono text-purple-300 mt-0.5">support@nexalabs.tech</p>
                 </div>
               </div>
 

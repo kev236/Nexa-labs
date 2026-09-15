@@ -9,4 +9,10 @@ export const category = defineType({
     defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'title' } }),
     defineField({ name: 'description', title: 'Omschrijving', type: 'text' }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'description',
+    },
+  },
 })

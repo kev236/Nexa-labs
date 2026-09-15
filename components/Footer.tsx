@@ -1,15 +1,13 @@
 import Link from 'next/link'
+import { Logo } from './Logo'
 
 export default function Footer() {
   return (
     <footer className="border-t border-zinc-800/80 bg-zinc-950/80 py-12 text-xs text-zinc-400 font-mono">
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-2 text-center md:text-left">
-          <div className="flex items-center justify-center md:justify-start gap-2">
-            <div className="w-5 h-5 rounded bg-purple-600 flex items-center justify-center font-bold text-white text-[10px]">
-              N
-            </div>
-            <span className="font-bold text-zinc-200 tracking-wider">NEXA LABS</span>
+          <div className="flex items-center justify-center md:justify-start">
+            <Logo markSize={20} wordmarkClassName="font-bold text-zinc-200 tracking-wider" />
           </div>
           <p className="text-zinc-500">Autonomous Micro-Software Ecosystem.</p>
         </div>

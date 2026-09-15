@@ -44,6 +44,9 @@ export default function ProductCard({ product }: ProductCardProps) {
               )}
             </div>
           </div>
+          <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-3">
+            {getIcon(product.iconName)}
+          </div>
           <h3 className="text-lg font-bold text-zinc-100 mb-2">{title}</h3>
           <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3 mb-6">
             {product.description}

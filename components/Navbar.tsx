@@ -18,9 +18,15 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
+  // Close the mobile menu on navigation. Adjusted during render (React's
+  // documented pattern for "reset state when a prop changes") rather than
+  // in an effect, which would call setState synchronously in the effect
+  // body and trigger an extra cascading render.
+  const [prevPathname, setPrevPathname] = useState(pathname)
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname)
     setMobileMenuOpen(false)
-  }, [pathname])
+  }
 
   const navLinks = [
     { name: 'Home', href: '/' },

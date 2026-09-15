@@ -3,6 +3,7 @@ import FadeIn from '@/components/FadeIn'
 import ProductCard from '@/components/ProductCard'
 import InteractiveDemo from '@/components/InteractiveDemo'
 import StatsCounter from '@/components/StatsCounter'
+import Testimonials from '@/components/Testimonials'
 import NewsletterWaitlist from '@/components/NewsletterWaitlist'
 import FAQ from '@/components/FAQ'
 import { getProducts, Product } from '@/data/products'
@@ -91,6 +92,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* TESTIMONIALS */}
+      <Testimonials />
 
       {/* HOW IT WORKS */}
       <section className="py-12 px-6">

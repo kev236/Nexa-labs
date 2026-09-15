@@ -1,4 +1,10 @@
+import type { ComponentProps } from 'react'
+import { PortableText } from '@portabletext/react'
+import type { SanityImageSource } from '@sanity/image-url'
 import { client } from '@/lib/sanity'
+
+/** Whatever shape the installed @portabletext/react expects for `value` — no separate type dependency to keep in sync. */
+type PortableTextValue = ComponentProps<typeof PortableText>['value']
 
 export interface Post {
   _id: string
@@ -6,8 +12,8 @@ export interface Post {
   slug: string
   publishedAt: string
   excerpt: string
-  mainImage?: any
-  body?: any
+  mainImage?: SanityImageSource & { alt?: string }
+  body?: PortableTextValue
 }
 
 export async function getPosts(): Promise<Post[]> {

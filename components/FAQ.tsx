@@ -1,15 +1,18 @@
-'use client'
-
-import { useState } from 'react'
+import { client } from '@/lib/sanity'
 import FadeIn from '@/components/FadeIn'
-import { ChevronDown } from 'lucide-react'
+import FAQAccordion, { type FAQItem } from '@/components/FAQAccordion'
 
-interface FAQItem {
-  question: string
-  answer: string
+// Was a hardcoded array here — content editors had no way to add or
+// change an FAQ without a code change and a deploy. Now reads the `faq`
+// document type (sanity/schemaTypes/faq.ts), which already existed in
+// the schema but had no frontend consumer at all.
+async function getFaqs(): Promise<FAQItem[]> {
+  return client.fetch<FAQItem[]>(
+    `*[_type == "faq"] | order(_createdAt asc) { question, answer }`
+  )
 }
 
-const faqs: FAQItem[] = [
+const FALLBACK_FAQS: FAQItem[] = [
   {
     question: 'How do Nexa micro-tools work together?',
     answer:
@@ -32,12 +35,12 @@ const faqs: FAQItem[] = [
   },
 ]
 
-export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
-
-  const toggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index)
-  }
+export default async function FAQ() {
+  const faqs = await getFaqs().catch(() => [])
+  // Sanity unreachable, or no FAQ documents published yet: fall back
+  // to the same 4 questions this section always shipped with, rather
+  // than rendering an empty section on a live page.
+  const items = faqs.length > 0 ? faqs : FALLBACK_FAQS
 
   return (
     <section className="max-w-4xl mx-auto px-6 w-full py-12">
@@ -46,44 +49,13 @@ export default function FAQ() {
           <span className="text-[10px] font-mono tracking-widest text-purple-400 uppercase border border-purple-500/30 bg-purple-950/40 px-3 py-1 rounded-full inline-block">
             Frequently Asked Questions
           </span>
-          <h2 className="text-3xl font-bold text-zinc-100">
-            Everything you need to know
-          </h2>
+          <h2 className="text-3xl font-bold text-zinc-100">Everything you need to know</h2>
           <p className="text-zinc-400 text-sm max-w-xl mx-auto">
             Clear answers about our autonomous architecture, deployment speed, and product roadmap.
           </p>
         </div>
 
-        <div className="space-y-4">
-          {faqs.map((faq, index) => {
-            const isOpen = openIndex === index
-            return (
-              <div
-                key={index}
-                className="rounded-2xl border border-zinc-800/80 bg-zinc-900/30 overflow-hidden transition-colors"
-              >
-                <button
-                  onClick={() => toggle(index)}
-                  className="w-full flex items-center justify-between p-6 text-left cursor-pointer focus:outline-none"
-                >
-                  <span className="text-base font-semibold text-zinc-100">
-                    {faq.question}
-                  </span>
-                  <ChevronDown
-                    className={`w-5 h-5 text-zinc-400 transition-transform duration-300 ${
-                      isOpen ? 'rotate-180 text-purple-400' : ''
-                    }`}
-                  />
-                </button>
-                {isOpen && (
-                  <div className="px-6 pb-6 text-sm text-zinc-400 leading-relaxed border-t border-zinc-800/40 pt-4">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
+        <FAQAccordion items={items} />
       </FadeIn>
     </section>
   )

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { Logo } from './Logo'
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -18,9 +19,15 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
+  // Close the mobile menu on navigation. Adjusted during render (React's
+  // documented pattern for "reset state when a prop changes") rather than
+  // in an effect, which would call setState synchronously in the effect
+  // body and trigger an extra cascading render.
+  const [prevPathname, setPrevPathname] = useState(pathname)
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname)
     setMobileMenuOpen(false)
-  }, [pathname])
+  }
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -41,12 +48,10 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded bg-purple-600 flex items-center justify-center font-bold text-white text-sm">
-            N
-          </div>
-          <span className="font-bold tracking-wider text-sm text-zinc-100 group-hover:text-purple-400 transition-colors">
-            NEXA LABS
-          </span>
+          <Logo
+            markSize={32}
+            wordmarkClassName="font-bold tracking-wider text-sm text-zinc-100 group-hover:text-purple-300 transition-colors"
+          />
         </Link>
 
         {/* Desktop Nav */}

@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     }
 
     const stripe = new Stripe(apiKey, {
-      apiVersion: '2026-08-26.dahlia' as any,
+      apiVersion: '2026-08-26.dahlia',
     })
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
@@ -51,8 +51,9 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.json({ url: session.url })
-  } catch (error: any) {
+  } catch (error) {
     console.error('Stripe Checkout Error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Unknown error'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }

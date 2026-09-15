@@ -9,4 +9,10 @@ export const faq = defineType({
     defineField({ name: 'answer', title: 'Antwoord', type: 'text', rows: 4, validation: (Rule) => Rule.required() }),
     defineField({ name: 'category', title: 'Categorie (optioneel)', type: 'string' }),
   ],
+  preview: {
+    select: {
+      title: 'question',
+      subtitle: 'answer',
+    },
+  },
 })

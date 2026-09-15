@@ -1,3 +1,5 @@
+import { client } from '@/lib/sanity'
+
 export interface Product {
   id: string
   _id?: string
@@ -21,69 +23,8 @@ export interface UpcomingProduct {
   votes: number
 }
 
-export const PRODUCTS: Product[] = [
-  {
-    id: 'siteaudit',
-    _id: 'siteaudit',
-    title: 'Nexa SiteAudit',
-    name: 'Nexa SiteAudit',
-    slug: 'siteaudit',
-    description:
-      'Sub-second headless site diagnostic engine verifying Core Web Vitals, OpenGraph tags, WCAG accessibility, and broken links.',
-    category: 'SEO & Performance',
-    status: 'Live',
-    iconName: 'search',
-    tags: ['SEO', 'Lighthouse', 'WCAG'],
-    features: [
-      'Sub-second Headless Lighthouse Diagnostic',
-      'OpenGraph, Schema.org & Meta-Tag Verification',
-      'WCAG 2.1 AA Accessibility Compliance Engine',
-      'Real-time Broken Link & Asset Crawling',
-      'CI/CD Deployment Gate Webhooks',
-    ],
-  },
-  {
-    id: 'quoteflow',
-    _id: 'quoteflow',
-    title: 'Nexa QuoteFlow',
-    name: 'Nexa QuoteFlow',
-    slug: 'quoteflow',
-    description:
-      'Interactive dynamic pricing and proposal builder with instant e-signatures, client view telemetry, and direct deposit payments.',
-    category: 'Sales',
-    status: 'Beta',
-    iconName: 'file-text',
-    tags: ['Proposals', 'e-Sign', 'Stripe'],
-    features: [
-      'Interactive Dynamic Pricing & Scope Selection',
-      'Instant Edge PDF Generation & e-Signature',
-      'Real-time Client View & Open Telemetry',
-      'Direct Stripe Deposit Payment Integration',
-      'Custom Domain Support with Tailored Branding',
-    ],
-  },
-  {
-    id: 'invoicechaser',
-    _id: 'invoicechaser',
-    title: 'Nexa InvoiceChaser',
-    name: 'Nexa InvoiceChaser',
-    slug: 'invoicechaser',
-    description:
-      'Autonomous payment recovery sequence engine that tracks overdue invoices, calculates late fees, and collects payments via Stripe & Mollie.',
-    category: 'Finance',
-    status: 'Beta',
-    iconName: 'receipt',
-    tags: ['Invoicing', 'Automation', 'Payments'],
-    features: [
-      'Smart Escalation Sequences (Email & API Reminders)',
-      'Direct Accounting Sync (QuickBooks, Xero, Exact Online)',
-      'One-Click Instant Payment Link Embedding',
-      'Autonomous Late Fee & Penalty Calculation',
-      'Immutable Audit Logs & Read-Receipt Tracking',
-    ],
-  },
-]
-
+// Static for now — no live voting backend behind these numbers yet. See
+// components/ProductPipeline.tsx.
 export const UPCOMING_PRODUCTS: UpcomingProduct[] = [
   {
     id: 'nexa-cron',
@@ -111,12 +52,71 @@ export const UPCOMING_PRODUCTS: UpcomingProduct[] = [
   },
 ]
 
-export async function getProducts(): Promise<Product[]> {
-  return PRODUCTS
+const STATUS_LABEL: Record<string, Product['status']> = {
+  live: 'Live',
+  beta: 'Beta',
+  'coming-soon': 'Coming soon',
 }
 
-export async function getProductBySlug(
+type SanityProduct = {
+  _id: string
+  name: string
   slug: string
-): Promise<Product | undefined> {
-  return PRODUCTS.find((p) => p.slug === slug)
+  description?: string
+  category?: string
+  status?: string
+  iconName?: string
+  tags?: string[]
+  price?: number
+  features?: string[]
+}
+
+function toProduct(doc: SanityProduct): Product {
+  return {
+    id: doc.slug,
+    _id: doc._id,
+    title: doc.name,
+    name: doc.name,
+    slug: doc.slug,
+    description: doc.description ?? '',
+    category: doc.category ?? 'Developer Tools',
+    status: STATUS_LABEL[doc.status ?? 'coming-soon'] ?? 'Coming soon',
+    iconName: doc.iconName ?? 'box',
+    tags: doc.tags,
+    price: doc.price !== undefined ? `€${doc.price}` : undefined,
+    features: doc.features,
+  }
+}
+
+const PRODUCT_PROJECTION = `{
+  _id,
+  name,
+  "slug": slug.current,
+  description,
+  category,
+  status,
+  iconName,
+  tags,
+  price,
+  features
+}`
+
+/**
+ * Products are managed in Sanity Studio (Products & Ecosystem) — this is
+ * the one place that reads them, so every page listing products goes
+ * through this same query and mapping rather than drifting copies of it.
+ */
+export async function getProducts(): Promise<Product[]> {
+  const docs = await client.fetch<SanityProduct[]>(
+    `*[_type == "product" && defined(slug.current)] | order(name asc) ${PRODUCT_PROJECTION}`
+  )
+  return docs.map(toProduct)
+}
+
+export async function getProductBySlug(slug: string): Promise<Product | undefined> {
+  const doc = await client.fetch<SanityProduct | null>(
+    `*[_type == "product" && slug.current == $slug][0] ${PRODUCT_PROJECTION}`,
+    { slug }
+  )
+  return doc ? toProduct(doc) : undefined
 }

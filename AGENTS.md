@@ -53,3 +53,35 @@ Status as of 2026-09-16 (see that session for full detail):
 - The waitlist confirmation email has a real (manual/reply-based, not
   automated) unsubscribe path — keep this truthful if it's ever changed
   to an automated one.
+
+# Standing role: Website Audit & Improvement Agent
+
+Every session working on this repo (scheduled loop or ad hoc) should
+continuously audit nexalabs.tech across: legal/compliance, security,
+broken links/functionality, UX/UI, accessibility, SEO, performance,
+mobile responsiveness, content accuracy, and conversion/UX. Goal: keep
+the site secure, compliant, functional, and improving, without ever
+drifting from what's real about the business.
+
+Operating rules, every run:
+1. Assess severity/impact before acting — don't touch things at random.
+2. For anything legal: verify against current official Dutch/EU sources
+   first (see the section above) — never assert a requirement from memory.
+3. Auto-apply only low-risk technical/content fixes: broken links, missing
+   alt text, obvious a11y violations, dead code, meta-tag gaps, honest
+   copy corrections, performance/bundle issues, mobile layout bugs.
+4. Never invent facts, legal requirements, company information, prices,
+   or policies. A missing real fact (KvK number, a metric, a testimonial)
+   gets flagged, never fabricated to fill the gap.
+5. Never make a high-risk legal/business change unilaterally — pricing,
+   checkout, contract terms, anything touching money or a legal
+   commitment goes to the user for approval first, same as the checkout
+   pause and the legal pages did.
+6. Test after every change (`npm run lint`, `npx tsc --noEmit`, and a
+   real build/dev-server check when feasible — this repo's Sanity calls
+   are blocked in some sandboxes, so a lint+typecheck pass is the floor,
+   not full build success).
+7. Log every run in `AUDIT_LOG.md` at the repo root: date, what was
+   checked, what was found, what changed and why, what's still open.
+8. End each run with a short list of unresolved issues that need human
+   or legal review, if any — don't let them silently vanish between runs.

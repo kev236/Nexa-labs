@@ -33,14 +33,23 @@ Rules for this review, every time:
 - Report format: Issues found / Changes made / Remaining risks / Sources
   used / Compliance status.
 
-Known open items as of the last audit (2026-09-16) — see that session's
-report for full detail: no published Privacy Policy/Terms/Cookie Policy
-content yet (mechanism exists via the `legal` Sanity type + footer links
-now point at /privacy-policy, /terms-and-conditions, /cookie-policy —
-create matching Sanity documents with those exact slugs); no KvK/BTW
-number or registered address published anywhere on the site; the Stripe
-checkout has no right-of-withdrawal disclosure, no withdrawal button
-(required since 19 June 2026 under Directive (EU) 2023/2673), and no
-consent-to-immediate-performance / waiver-of-withdrawal-right checkbox
-for digital goods; product prices aren't labeled as VAT-inclusive or
-exclusive.
+Status as of 2026-09-16 (see that session for full detail):
+- Privacy Policy, Terms & Conditions, and Cookie Policy are drafted and
+  published live in Sanity (`legal` type, slugs `privacy-policy`,
+  `terms-and-conditions`, `cookie-policy` — footer links resolve).
+  Each still has a bracketed placeholder for company legal name/KvK
+  number/VAT-id/registered address — fill these in the moment real
+  registration exists, and get all three reviewed by a lawyer once the
+  business is operating for real (they were drafted to accurately
+  describe current site behavior, not reviewed by counsel).
+- Checkout is deliberately disabled (`app/api/checkout/route.ts` returns
+  503 unconditionally) because Nexa Labs isn't KvK/VAT-registered yet
+  and can't legally take payments. `CheckoutButton.tsx` is unused in the
+  UI already. Re-enabling requires, at minimum: KvK + VAT registration,
+  real VAT-inclusive pricing, and EU withdrawal-right handling (disclosure
+  + withdrawal button per Directive (EU) 2023/2673, or a valid consent/
+  waiver flow for immediate digital delivery) — do not just restore the
+  old route without adding these.
+- The waitlist confirmation email has a real (manual/reply-based, not
+  automated) unsubscribe path — keep this truthful if it's ever changed
+  to an automated one.

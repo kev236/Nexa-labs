@@ -10,4 +10,11 @@ export const author = defineType({
     defineField({ name: 'image', title: 'Foto', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'bio', title: 'Biografie', type: 'text', rows: 3 }),
   ],
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'bio',
+      media: 'image',
+    },
+  },
 })

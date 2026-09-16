@@ -36,9 +36,8 @@ export default function WaitlistForm({
       setStatus('success')
       setEmail('')
     } catch {
-      // Fallback response for interface confirmation
-      setStatus('success')
-      setEmail('')
+      setStatus('error')
+      setErrorMessage('Something went wrong — please try again.')
     }
   }
 

@@ -48,6 +48,9 @@ export async function POST(request: Request) {
           <p>You're now registered for early access. We'll email you the moment a beta or release becomes available.</p>
           <br/>
           <p style="color: #a1a1aa; font-size: 12px;">Team Nexa Labs — Small software. Big impact.</p>
+          <p style="color: #71717a; font-size: 11px; margin-top: 16px; border-top: 1px solid #27272a; padding-top: 12px;">
+            Don't want these updates? Reply to this email or contact support@nexalabs.tech and we'll remove you from the list.
+          </p>
         </div>
       `,
     })

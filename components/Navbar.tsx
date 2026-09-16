@@ -30,12 +30,12 @@ export default function Navbar() {
   }
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Products', href: '/products' },
+    { name: 'Products', href: '/#products' },
+    { name: 'Catalog', href: '/products' },
     { name: 'Blog', href: '/blog' },
     { name: 'Changelog', href: '/changelog' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'About', href: '/#story' },
+    { name: 'Contact', href: '/#contact' },
   ]
 
   return (

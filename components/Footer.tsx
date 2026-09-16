@@ -1,7 +1,11 @@
 import Link from 'next/link'
 import { Logo } from './Logo'
+import { getProducts } from '@/data/products'
 
-export default function Footer() {
+export default async function Footer() {
+  const products = await getProducts().catch(() => [])
+  const live = products.filter((p) => p.status === 'Live').length
+
   return (
     <footer className="border-t border-zinc-800/80 bg-zinc-950/80 py-12 text-xs text-zinc-400 font-mono">
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -12,10 +16,9 @@ export default function Footer() {
           <p className="text-zinc-500">Autonomous Micro-Software Ecosystem.</p>
         </div>
 
-        {/* Live System Status */}
         <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>All Systems Operational (99.99% Edge SLA)</span>
+          <span>{live} {live === 1 ? 'product' : 'products'} live</span>
         </div>
 
         <div className="flex items-center gap-6">

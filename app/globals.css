@@ -1,18 +1,35 @@
 @import "tailwindcss";
 
+@theme {
+  --color-ink: #09090b;
+  --color-surface: #0f0f13;
+  --color-surface-raised: #17171c;
+  --color-border-faint: rgba(244, 244, 245, 0.08);
+  --color-nexa-purple: #a855f7;
+  --color-nexa-purple-bright: #c084fc;
+  --color-nexa-indigo: #6366f1;
+  --color-nexa-cyan: #22d3ee;
+}
+
 html {
   scrollbar-gutter: stable;
   overflow-y: scroll;
-  background-color: #09090b;
+  background-color: var(--color-ink);
   color: #f4f4f5;
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: #09090b;
+  background-color: var(--color-ink);
   color: #f4f4f5;
 }
 
-/* Zachte achtergrondglow */
+/* Anchor targets sit under the fixed navbar without this. */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Soft background glow, reused across hero-scale sections. */
 .ambient-glow {
   background: radial-gradient(
     circle at 50% 0%,
@@ -22,7 +39,25 @@ body {
   );
 }
 
-/* Focus indicator voor toetsenbordnavigatie */
+/*
+ * Faint hexagon lattice — the same structural motif as the Nexa AI
+ * operating deck (dashboard app), so the product and the company site
+ * read as one system rather than two unrelated brands. Kept subtle:
+ * a texture, not a pattern anyone consciously notices.
+ */
+.hex-field {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cpath d='M28 0 56 16.2v32.3L28 64.8 0 48.5V16.2z' fill='none' stroke='%23a855f7' stroke-opacity='0.06'/%3E%3Cpath d='M28 32.2 56 48.5v32.3L28 97 0 80.8V48.5z' fill='none' stroke='%23a855f7' stroke-opacity='0.06'/%3E%3C/svg%3E");
+  background-size: 56px 97px;
+}
+
+.text-gradient {
+  background-image: linear-gradient(120deg, #f4f4f5 20%, var(--color-nexa-purple-bright) 60%, var(--color-nexa-cyan) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Focus indicator for keyboard navigation */
 :focus-visible {
   outline: 2px solid #c084fc !important;
   outline-offset: 4px !important;
@@ -31,6 +66,9 @@ body {
 
 /* Motion reduction */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   ::before,
   ::after {

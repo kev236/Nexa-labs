@@ -1,24 +1,11 @@
-import type { ComponentProps } from 'react'
-import { client } from '@/sanity/lib/client'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
+import { getChangelog } from '@/data/changelog'
 
 export const revalidate = 60
 
-type ChangelogEntry = {
-  _id: string
-  title: string
-  version?: string
-  releaseDate: string
-  type: 'Feature' | 'Improvement' | 'Fix' | 'Announcement'
-  content?: ComponentProps<typeof PortableText>['value']
-}
-
 export default async function ChangelogPage() {
-  const query = `*[_type == "changelog"] | order(releaseDate desc) {
-    _id, title, version, releaseDate, type, content
-  }`
-  const logs = await client.fetch<ChangelogEntry[]>(query)
+  const logs = await getChangelog()
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-20 min-h-screen">

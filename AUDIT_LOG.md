@@ -109,10 +109,42 @@ remains the floor per AGENTS.md.
   KvK/VAT/address placeholders, checkout disabled pending KvK
   registration — neither touched here, both still blocked on the
   business actually registering.
-- Not yet audited this pass: performance/bundle size (no bundle
-  analysis run), and a real cross-browser/device check of the new
-  mobile-nav work on the sibling `nexa-ai` dashboard (out of scope for
-  this repo). Next run should cover bundle size at minimum.
+- Not yet audited this pass: a real cross-browser/device check of the
+  new mobile-nav work on the sibling `nexa-ai` dashboard (out of scope
+  for this repo).
+
+**Follow-up same session — dependency cleanup (performance):**
+Checked the item flagged above as not yet covered. `next build` never
+reaches its own route/bundle-size report in this sandbox (dies earlier,
+at the pre-existing Sanity network-egress wall during static
+generation — see Verification above), so did dependency-level analysis
+instead: grepped every `package.json` dependency for an actual import
+anywhere in the codebase.
+
+Found three genuinely unused packages and removed them:
+`styled-components` (no imports anywhere — this project styles
+exclusively with Tailwind; likely an early-scaffold leftover),
+`clsx` and `tailwind-merge` (no imports, no `cn()`-style helper in
+`lib/` either). Verified each with an explicit `from 'x'` import grep
+across the whole repo, not just a substring match, before removing.
+
+Deliberately left `stripe` and `@stripe/stripe-js` in place despite
+also being unused right now — unlike the three above, these aren't
+accidental leftovers: AGENTS.md documents checkout as *intentionally*
+disabled pending KvK/VAT registration, with a specific real re-enable
+plan that needs the Stripe SDKs. Removing them now would just mean
+reinstalling the same packages later for no benefit — Next's per-route
+code splitting means an unimported package costs zero bytes in any
+page's actual JS bundle regardless of whether it's listed in
+`package.json`, so this wasn't blocking any real performance fix, only
+`node_modules`/install-size hygiene.
+
+**Verification:** `npx tsc --noEmit` and `npm run lint` both clean
+after `npm uninstall`; `next build` compiles and typechecks
+successfully again, same pre-existing Sanity sandbox wall at static
+generation as above (`package.json`/`package-lock.json` diff reviewed
+directly — only the 3 intended packages and their unique transitive
+deps changed).
 
 ---
 

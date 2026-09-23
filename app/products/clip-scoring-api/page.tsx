@@ -49,6 +49,19 @@ const FEATURES = [
   'Plain-English repost/skip recommendation with a confidence score',
 ]
 
+const PRICING = [
+  {
+    name: 'Flat',
+    price: '€29 / month',
+    note: 'For regular, ongoing use. Billed manually — usage is tracked on our end, no self-serve metering dashboard yet.',
+  },
+  {
+    name: 'Pay-as-you-go',
+    price: '€0.015 / call',
+    note: 'For lower or unpredictable volume. Same manual billing — invoiced against actual calls made.',
+  },
+]
+
 export default function ClipScoringApiPage() {
   return (
     <div className="pt-32 pb-24 px-6 max-w-5xl mx-auto w-full min-h-screen space-y-16">
@@ -118,10 +131,29 @@ export default function ClipScoringApiPage() {
 
             <div className="pt-6 border-t border-zinc-800/80 space-y-3">
               <h3 className="text-xs font-mono text-purple-400 uppercase tracking-widest">
+                Pricing
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {PRICING.map((tier) => (
+                  <div key={tier.name} className="p-4 rounded-xl bg-zinc-900/40 border border-zinc-800/60">
+                    <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">{tier.name}</p>
+                    <p className="text-xl font-bold text-zinc-100 mb-2">{tier.price}</p>
+                    <p className="text-xs text-zinc-400 leading-relaxed">{tier.note}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-[11px] text-zinc-500 font-mono">
+                Prices shown excl. VAT — Nexa Labs isn&apos;t VAT-registered yet, so nothing is
+                charged automatically; final invoice details are confirmed by email.
+              </p>
+            </div>
+
+            <div className="pt-6 border-t border-zinc-800/80 space-y-3">
+              <h3 className="text-xs font-mono text-purple-400 uppercase tracking-widest">
                 How it works
               </h3>
               <ol className="grid gap-2 text-xs font-mono text-zinc-300 list-decimal list-inside">
-                <li>Request access below — tell us what you&apos;d use it for.</li>
+                <li>Request access below — tell us which plan fits and what you&apos;d use it for.</li>
                 <li>We reply by email and set up billing directly, no card form on this site.</li>
                 <li>You get an API key — one header, one endpoint, real answers.</li>
               </ol>

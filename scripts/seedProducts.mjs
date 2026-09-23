@@ -103,9 +103,11 @@ const PRODUCTS = [
       'Draft captions and hashtags per platform',
       'Plain-English repost/skip recommendation with a confidence score',
     ],
-    // No price set deliberately — billing is manual (see
-    // app/products/clip-scoring-api/page.tsx), so there is no real number
-    // to publish here yet.
+    // €29/mo flat or €0.015/call pay-as-you-go (see
+    // app/products/clip-scoring-api/page.tsx for the full breakdown) —
+    // this single number is just the "starting at" figure shown on the
+    // product card. Billing itself is still manual.
+    price: 29,
   },
 ]
 

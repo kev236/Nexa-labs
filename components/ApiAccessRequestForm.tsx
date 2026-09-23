@@ -105,8 +105,8 @@ export default function ApiAccessRequestForm() {
       </button>
 
       <p className="text-[11px] text-zinc-500">
-        Pricing is worked out directly over email — no card form on this site. By submitting, you
-        agree to our{' '}
+        €29/month flat or €0.015/call pay-as-you-go, billed manually — no card form on this site.
+        By submitting, you agree to our{' '}
         <Link href="/privacy-policy" className="text-zinc-400 hover:text-purple-400 underline">
           Privacy Policy
         </Link>

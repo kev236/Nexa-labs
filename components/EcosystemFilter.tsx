@@ -11,7 +11,7 @@ interface EcosystemFilterProps {
 export default function EcosystemFilter({ products }: EcosystemFilterProps) {
   const [activeCategory, setActiveCategory] = useState<string>('All')
 
-  const categories = ['All', 'Sales', 'Finance', 'SEO & Performance']
+  const categories = ['All', 'Sales', 'Finance', 'SEO & Performance', 'Developer Tools']
 
   const filteredProducts =
     activeCategory === 'All'

@@ -57,7 +57,7 @@ export const product = defineType({
       type: 'string',
       description: 'Lucide icon name shown on the product card (e.g. search, file-text, receipt). Falls back to a generic box icon if left blank or unrecognized.',
       options: {
-        list: ['search', 'file-text', 'receipt'],
+        list: ['search', 'file-text', 'receipt', 'code'],
       },
     }),
     defineField({

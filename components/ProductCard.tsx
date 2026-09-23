@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import SpotlightCard from '@/components/SpotlightCard'
 import { Product } from '@/data/products'
-import { FileText, Receipt, Search, Box } from 'lucide-react'
+import { FileText, Receipt, Search, Box, Code2 } from 'lucide-react'
 
 interface ProductCardProps {
   product: Product
@@ -18,6 +18,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         return <Receipt size={24} className="text-purple-400" />
       case 'search':
         return <Search size={24} className="text-purple-400" />
+      case 'code':
+        return <Code2 size={24} className="text-purple-400" />
       default:
         return <Box size={24} className="text-purple-400" />
     }

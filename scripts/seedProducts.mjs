@@ -86,6 +86,27 @@ const PRODUCTS = [
       'Immutable Audit Logs & Read-Receipt Tracking',
     ],
   },
+  {
+    _id: 'product-clip-scoring-api',
+    _type: 'product',
+    name: 'Clip Scoring API',
+    slug: { _type: 'slug', current: 'clip-scoring-api' },
+    description:
+      "Score a short-form clip's virality and copyright risk before you spend time editing it — one API call, real reasoning, draft captions for YouTube, TikTok, and Instagram.",
+    category: 'Developer Tools',
+    status: 'beta',
+    iconName: 'code',
+    tags: ['API', 'Short-form', 'Content'],
+    features: [
+      'Virality score (0–100) from a clip description and optional source URL',
+      'Copyright-risk read with real reasoning, not a keyword flag',
+      'Draft captions and hashtags per platform',
+      'Plain-English repost/skip recommendation with a confidence score',
+    ],
+    // No price set deliberately — billing is manual (see
+    // app/products/clip-scoring-api/page.tsx), so there is no real number
+    // to publish here yet.
+  },
 ]
 
 const transaction = client.transaction()

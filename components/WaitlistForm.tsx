@@ -64,6 +64,7 @@ export default function WaitlistForm({
           <div className="flex flex-col sm:flex-row gap-3">
             <input
               type="email"
+              aria-label="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="engineer@company.com"

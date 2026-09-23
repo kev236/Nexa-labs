@@ -31,6 +31,7 @@ export default function RoiCalculator() {
           </div>
           <input
             type="range"
+            aria-label="Active proposals and invoices per month"
             min={5}
             max={80}
             value={monthlyClients}

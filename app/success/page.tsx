@@ -1,6 +1,17 @@
+import type { Metadata } from 'next'
 import FadeIn from '@/components/FadeIn'
 import SpotlightCard from '@/components/SpotlightCard'
 import Link from 'next/link'
+
+// A post-payment confirmation page has no content value to a search
+// visitor and shouldn't show up in results — same reasoning as any
+// transactional "thank you" page. Checkout is currently disabled
+// (app/api/checkout/route.ts returns 503), so this route isn't
+// reachable in practice, but the fix is correct regardless of that.
+export const metadata: Metadata = {
+  title: 'Payment Successful',
+  robots: { index: false, follow: false },
+}
 
 export default function SuccessPage() {
   return (

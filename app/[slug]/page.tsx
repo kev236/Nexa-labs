@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react'
+import type { Metadata } from 'next'
 import { client } from '@/lib/sanity'
 import { notFound } from 'next/navigation'
 import { PortableText } from '@portabletext/react'
@@ -10,12 +11,28 @@ type LegalPageDoc = {
   content?: ComponentProps<typeof PortableText>['value']
 }
 
+type Props = { params: Promise<{ slug: string }> }
+
 export async function generateStaticParams() {
   const pages = await client.fetch<{ slug: string }[]>(`*[_type == "legal"]{ "slug": slug.current }`)
   return pages.map((page) => ({ slug: page.slug }))
 }
 
-export default async function LegalPage({ params }: { params: Promise<{ slug: string }> }) {
+// Was missing entirely — every legal page (Privacy Policy, Terms &
+// Conditions, Cookie Policy) rendered with the root layout's generic
+// homepage title/description as its <title>/meta description, both in
+// the browser tab and in search results. Real title, no invented copy.
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const page = await client.fetch<Pick<LegalPageDoc, 'title'> | null>(
+    `*[_type == "legal" && slug.current == $slug][0]{ title }`,
+    { slug }
+  )
+  if (!page) return { title: 'Not Found' }
+  return { title: page.title, robots: { index: true, follow: true } }
+}
+
+export default async function LegalPage({ params }: Props) {
   const { slug } = await params
   const page = await client.fetch<LegalPageDoc | null>(
     `*[_type == "legal" && slug.current == $slug][0]{ title, lastUpdated, content }`,

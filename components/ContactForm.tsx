@@ -50,11 +50,12 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="flex gap-2 bg-zinc-950 p-1 rounded-lg border border-zinc-800 w-fit">
+      <div role="group" aria-label="Inquiry type" className="flex gap-2 bg-zinc-950 p-1 rounded-lg border border-zinc-800 w-fit">
         {INQUIRY_TYPES.map((type) => (
           <button
             key={type.value}
             type="button"
+            aria-pressed={formData.inquiryType === type.value}
             onClick={() => setFormData({ ...formData, inquiryType: type.value })}
             className={`px-3 py-1.5 text-xs font-mono rounded-md transition-colors ${
               formData.inquiryType === type.value
@@ -68,8 +69,9 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-sm text-zinc-400 mb-1">Name</label>
+        <label htmlFor="contact-name" className="block text-sm text-zinc-400 mb-1">Name</label>
         <input
+          id="contact-name"
           type="text"
           required
           value={formData.name}
@@ -79,8 +81,9 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-sm text-zinc-400 mb-1">Email address</label>
+        <label htmlFor="contact-email" className="block text-sm text-zinc-400 mb-1">Email address</label>
         <input
+          id="contact-email"
           type="email"
           required
           value={formData.email}
@@ -90,8 +93,9 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-sm text-zinc-400 mb-1">Subject</label>
+        <label htmlFor="contact-subject" className="block text-sm text-zinc-400 mb-1">Subject</label>
         <input
+          id="contact-subject"
           type="text"
           value={formData.subject}
           onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
@@ -100,8 +104,9 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-sm text-zinc-400 mb-1">Message</label>
+        <label htmlFor="contact-message" className="block text-sm text-zinc-400 mb-1">Message</label>
         <textarea
+          id="contact-message"
           required
           rows={4}
           value={formData.message}

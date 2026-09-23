@@ -1,6 +1,23 @@
+import type { Metadata } from 'next'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
 import { getChangelog } from '@/data/changelog'
+
+export const metadata: Metadata = {
+  title: 'Changelog',
+  description:
+    'New updates, improvements, and architectural changes from the Nexa Labs engineering team.',
+  openGraph: {
+    title: 'Changelog | Nexa Labs',
+    description:
+      'New updates, improvements, and architectural changes from the Nexa Labs engineering team.',
+  },
+  twitter: {
+    title: 'Changelog | Nexa Labs',
+    description:
+      'New updates, improvements, and architectural changes from the Nexa Labs engineering team.',
+  },
+}
 
 export const revalidate = 60
 

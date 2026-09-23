@@ -21,7 +21,7 @@ const FALLBACK_FAQS: FAQItem[] = [
   {
     question: 'Are there any heavy SDKs or complex installations?',
     answer:
-      'No. All tools are designed with a zero-bloat philosophy. Most integrations require just a lightweight API key or a simple drop-in script with sub-15ms execution speeds.',
+      'No. All tools are designed with a zero-bloat philosophy. Most integrations require just a lightweight API key or a simple drop-in script.',
   },
   {
     question: 'How does access and pricing work across new SaaS releases?',

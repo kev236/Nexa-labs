@@ -3,7 +3,7 @@ import Link from 'next/link'
 import FadeIn from '@/components/FadeIn'
 import ProductWaitlistForm from '@/components/ProductWaitlistForm'
 import { getProductBySlug, getProducts } from '@/data/products'
-import { ArrowLeft, CheckCircle2, Zap, Shield, Cpu } from 'lucide-react'
+import { ArrowLeft, CheckCircle2 } from 'lucide-react'
 
 export const revalidate = 60
 
@@ -82,21 +82,6 @@ export default async function ProductDetailPage({ params }: Props) {
                 </div>
               </div>
             )}
-
-            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800/80 text-center font-mono text-[11px]">
-              <div className="p-3 rounded-xl bg-zinc-900/40 border border-zinc-800/60">
-                <Zap className="w-4 h-4 text-purple-400 mx-auto mb-1.5" />
-                <span className="text-zinc-300 block">Sub-15ms Edge</span>
-              </div>
-              <div className="p-3 rounded-xl bg-zinc-900/40 border border-zinc-800/60">
-                <Shield className="w-4 h-4 text-purple-400 mx-auto mb-1.5" />
-                <span className="text-zinc-300 block">Stateless Auth</span>
-              </div>
-              <div className="p-3 rounded-xl bg-zinc-900/40 border border-zinc-800/60">
-                <Cpu className="w-4 h-4 text-purple-400 mx-auto mb-1.5" />
-                <span className="text-zinc-300 block">Zero Overhead</span>
-              </div>
-            </div>
           </div>
 
           <div className="lg:col-span-5">

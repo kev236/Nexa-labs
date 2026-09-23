@@ -1,14 +1,11 @@
-import { client } from '@/sanity/lib/client'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
+import { getChangelog } from '@/data/changelog'
 
 export const revalidate = 60
 
 export default async function ChangelogPage() {
-  const query = `*[_type == "changelog"] | order(releaseDate desc) {
-    _id, title, version, releaseDate, type, content
-  }`
-  const logs = await client.fetch(query)
+  const logs = await getChangelog()
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-20 min-h-screen">
@@ -25,7 +22,7 @@ export default async function ChangelogPage() {
         <p className="text-gray-500 font-mono text-sm">No updates published yet.</p>
       ) : (
         <div className="relative border-l border-white/10 pl-8 md:pl-10 space-y-16 ml-2 md:ml-4">
-          {logs.map((log: any) => (
+          {logs.map((log) => (
             <div key={log._id} className="relative">
               <div className="absolute -left-10.25 md:-left-12.25 top-1 w-4 h-4 bg-black border-2 border-purple-500 rounded-full shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
               

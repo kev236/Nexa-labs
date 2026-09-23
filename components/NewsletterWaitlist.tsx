@@ -4,17 +4,25 @@ import { useState } from 'react'
 
 export default function NewsletterWaitlist() {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email) return
 
     setStatus('loading')
-    setTimeout(() => {
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, productName: 'General' }),
+      })
+      if (!res.ok) throw new Error('request failed')
       setStatus('success')
       setEmail('')
-    }, 800)
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -55,6 +63,9 @@ export default function NewsletterWaitlist() {
             {status === 'loading' ? 'Joining...' : 'Get Invites'}
           </button>
         </form>
+      )}
+      {status === 'error' && (
+        <p className="text-xs text-red-400 font-mono mt-3">Something went wrong — please try again.</p>
       )}
     </div>
   )

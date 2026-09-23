@@ -35,6 +35,20 @@ export default function HeroVisual() {
         <div className="h-1.5 bg-gray-800 rounded w-2/3" />
       </motion.div>
 
+      {/* Floating Product Node 3 */}
+      <motion.div
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+        className="hidden md:block absolute top-6 right-10 bg-gray-900/90 border border-gray-800 p-4 rounded-xl shadow-2xl backdrop-blur-md w-44 text-xs space-y-2 z-10"
+      >
+        <div className="flex items-center space-x-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+          <span className="text-gray-300 font-medium">SiteAudit</span>
+        </div>
+        <div className="h-1.5 bg-gray-800 rounded w-full" />
+        <div className="h-1.5 bg-gray-800/80 rounded w-1/2" />
+      </motion.div>
+
       {/* Center Engine Node */}
       <motion.div
         animate={{ scale: [0.98, 1.02, 0.98] }}

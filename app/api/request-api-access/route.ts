@@ -15,23 +15,28 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json()
-    const { name, email, subject, message, inquiryType } = body
+    const { email, useCase, company_website } = body
 
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    // A hidden field real visitors never fill in; a bot's autofill often does.
+    if (typeof company_website === 'string' && company_website.trim()) {
+      return NextResponse.json({ success: true })
     }
 
-    // 1. Save to Sanity CMS (fail-safe — never blocks the reply)
+    if (!email || !String(email).includes('@')) {
+      return NextResponse.json({ error: 'A valid email address is required' }, { status: 400 })
+    }
+    if (!useCase || !String(useCase).trim()) {
+      return NextResponse.json({ error: "Tell us what you'd use it for" }, { status: 400 })
+    }
+
+    // 1. Save to Sanity (fail-safe — never blocks the reply)
     try {
       const { writeClient } = await import('@/lib/sanity.server')
       if (writeClient) {
         await writeClient.create({
-          _type: 'contactMessage',
-          name,
+          _type: 'apiAccessRequest',
           email,
-          inquiryType: inquiryType || 'general',
-          subject: subject || 'New contact message',
-          message,
+          useCase,
           createdAt: new Date().toISOString(),
         })
       }
@@ -39,22 +44,20 @@ export async function POST(request: Request) {
       console.warn('Sanity write skipped:', sanityErr)
     }
 
-    // 2. Notify the team
+    // 2. Notify the team (billing + key issuance is manual — this is the
+    // only place that request surfaces)
     const adminEmail = await resend.emails.send({
-      from: 'Nexa Contact Form <support@nexalabs.tech>',
+      from: 'Nexa Labs <support@nexalabs.tech>',
       to: 'support@nexalabs.tech',
       replyTo: email,
-      subject: `[${(inquiryType || 'CONTACT').toUpperCase()}] ${subject || 'Message from'} ${name}`,
+      subject: `[API ACCESS] Clip Scoring API request from ${email}`,
       html: `
         <div style="font-family: monospace; padding: 24px; background-color: #050505; color: #f4f4f5; border: 1px solid #27272a; border-radius: 12px;">
-          <h2 style="color: #a855f7; margin-bottom: 16px;">New Contact Message</h2>
-          <p><strong>Name:</strong> ${name}</p>
+          <h2 style="color: #a855f7; margin-bottom: 16px;">New Clip Scoring API access request</h2>
           <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #c084fc;">${email}</a></p>
-          <p><strong>Inquiry type:</strong> ${inquiryType || 'general'}</p>
-          <p><strong>Subject:</strong> ${subject || 'No subject'}</p>
           <hr style="border-color: #27272a; margin: 20px 0;" />
-          <p><strong>Message:</strong></p>
-          <div style="background-color: #09090b; padding: 16px; border-radius: 8px; border: 1px solid #18181b; white-space: pre-wrap; color: #e4e4e7;">${message}</div>
+          <p><strong>Use case:</strong></p>
+          <div style="background-color: #09090b; padding: 16px; border-radius: 8px; border: 1px solid #18181b; white-space: pre-wrap; color: #e4e4e7;">${useCase}</div>
         </div>
       `,
     })
@@ -64,18 +67,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: adminEmail.error.message }, { status: 400 })
     }
 
-    // 3. Confirmation to the customer
+    // 3. Confirmation to the requester
     try {
       await resend.emails.send({
         from: 'Nexa Labs <support@nexalabs.tech>',
         to: email,
-        subject: `We received your message: ${subject || 'Contact — Nexa Labs'}`,
+        subject: 'We received your Clip Scoring API access request',
         html: `
           <div style="font-family: monospace; padding: 24px; background-color: #050505; color: #f4f4f5; border: 1px solid #27272a; border-radius: 12px;">
-            <p>Hi ${name},</p>
-            <p>Thanks for reaching out to Nexa Labs. We've received your message and will get back to you as soon as possible.</p>
+            <p>Thanks for your interest in the Clip Scoring API.</p>
+            <p>We review requests and reply by email to work out access and billing directly — no card form, no automated signup.</p>
             <br/>
-            <p style="color: #a1a1aa; font-size: 12px;">Team Nexa Labs</p>
+            <p style="color: #a1a1aa; font-size: 12px;">Team Nexa Labs — Small software. Big impact.</p>
           </div>
         `,
       })
@@ -85,7 +88,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Contact API error:', error)
+    console.error('Request API access error:', error)
     return NextResponse.json({ error: String(error) }, { status: 500 })
   }
 }

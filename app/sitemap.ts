@@ -11,8 +11,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getPosts().catch(() => []),
   ])
 
-  // Statische pagina's
-  const staticRoutes = ['', '/products', '/blog', '/about', '/contact'].map((route) => ({
+  // Static pages. /about and /contact are excluded here on purpose —
+  // both are redirect-only stubs to homepage sections (#story, #contact)
+  // since the one-page redesign, not distinct pages worth indexing.
+  const staticRoutes = ['', '/products', '/blog', '/changelog', '/privacy-policy', '/terms-and-conditions', '/cookie-policy'].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,

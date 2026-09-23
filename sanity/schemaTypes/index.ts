@@ -9,8 +9,9 @@ import { contactMessage } from './contactMessage'
 import { waitlist } from './waitlist'
 import { legal } from './legal' // NIEUW
 import { changelog } from './changelog'
+import { apiAccessRequest } from './apiAccessRequest'
 
 export const schemaTypes = [
   product, post, author, category, testimonial, faq, page,
-  contactMessage, waitlist, legal, changelog
+  contactMessage, waitlist, legal, changelog, apiAccessRequest
 ]

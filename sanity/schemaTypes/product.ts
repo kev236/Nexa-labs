@@ -43,6 +43,31 @@ export const product = defineType({
       initialValue: 'coming-soon',
     }),
     defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      description: 'Drives the filter tabs on /products — pick an existing one where it fits, or type a new one.',
+      options: {
+        list: ['Sales', 'Finance', 'SEO & Performance', 'Developer Tools'],
+      },
+    }),
+    defineField({
+      name: 'iconName',
+      title: 'Icon',
+      type: 'string',
+      description: 'Lucide icon name shown on the product card (e.g. search, file-text, receipt). Falls back to a generic box icon if left blank or unrecognized.',
+      options: {
+        list: ['search', 'file-text', 'receipt', 'code'],
+      },
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: { layout: 'tags' },
+    }),
+    defineField({
       name: 'price',
       title: 'Price (€)',
       type: 'number',

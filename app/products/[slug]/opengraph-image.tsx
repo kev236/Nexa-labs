@@ -34,6 +34,23 @@ export default async function Image({ params }: { params: Promise<{ slug: string
             letterSpacing: '2px',
           }}
         >
+          <svg width="24" height="24" viewBox="0 0 46 46" fill="none">
+            <line x1="12" y1="34" x2="23" y2="12" stroke="#a855f7" strokeWidth="3" strokeLinecap="round" />
+            <line x1="23" y1="12" x2="34" y2="34" stroke="#a855f7" strokeWidth="3" strokeLinecap="round" />
+            <line
+              x1="12"
+              y1="34"
+              x2="34"
+              y2="34"
+              stroke="#a855f7"
+              strokeWidth="3"
+              strokeLinecap="round"
+              opacity="0.45"
+            />
+            <circle cx="23" cy="12" r="5.5" fill="#030303" stroke="#c084fc" strokeWidth="3" />
+            <circle cx="12" cy="34" r="4.5" fill="#a855f7" />
+            <circle cx="34" cy="34" r="4.5" fill="#a855f7" />
+          </svg>
           NEXA LABS ECOSYSTEM
         </div>
 

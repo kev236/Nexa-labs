@@ -13,7 +13,10 @@ type Props = {
 
 export async function generateStaticParams() {
   const products = await getProducts()
-  return products.map((p) => ({ slug: p.slug }))
+  // 'clip-scoring-api' has its own static route (app/products/clip-scoring-api)
+  // with a real API contract instead of this template's generic stat tiles —
+  // excluded here so the two don't both try to generate the same path.
+  return products.filter((p) => p.slug !== 'clip-scoring-api').map((p) => ({ slug: p.slug }))
 }
 
 export async function generateMetadata({ params }: Props) {

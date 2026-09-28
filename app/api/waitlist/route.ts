@@ -15,7 +15,12 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json()
-    const { email, productName } = body
+    const { email, productName, company_website } = body
+
+    // A hidden field real visitors never fill in; a bot's autofill often does.
+    if (typeof company_website === 'string' && company_website.trim()) {
+      return NextResponse.json({ success: true })
+    }
 
     if (!email || !email.includes('@')) {
       return NextResponse.json({ error: 'A valid email address is required' }, { status: 400 })

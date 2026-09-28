@@ -15,7 +15,12 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json()
-    const { name, email, subject, message, inquiryType } = body
+    const { name, email, subject, message, inquiryType, company_website } = body
+
+    // A hidden field real visitors never fill in; a bot's autofill often does.
+    if (typeof company_website === 'string' && company_website.trim()) {
+      return NextResponse.json({ success: true })
+    }
 
     if (!name || !email || !message) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })

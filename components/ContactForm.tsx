@@ -16,6 +16,7 @@ export default function ContactForm() {
     message: '',
     inquiryType: 'general',
   })
+  const [company_website, setCompanyWebsite] = useState('') // honeypot
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +27,7 @@ export default function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, company_website }),
       })
 
       if (res.ok) {
@@ -50,6 +51,20 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Honeypot — hidden from real visitors, off-screen not display:none so screen readers skip it correctly */}
+      <div style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>
+        <label htmlFor="contact-company-website">Company website</label>
+        <input
+          id="contact-company-website"
+          name="company_website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={company_website}
+          onChange={(e) => setCompanyWebsite(e.target.value)}
+        />
+      </div>
+
       <div role="group" aria-label="Inquiry type" className="flex gap-2 bg-zinc-950 p-1 rounded-lg border border-zinc-800 w-fit">
         {INQUIRY_TYPES.map((type) => (
           <button

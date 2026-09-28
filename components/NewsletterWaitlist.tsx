@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 export default function NewsletterWaitlist() {
   const [email, setEmail] = useState('')
+  const [company_website, setCompanyWebsite] = useState('') // honeypot
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -15,7 +16,7 @@ export default function NewsletterWaitlist() {
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, productName: 'General' }),
+        body: JSON.stringify({ email, productName: 'General', company_website }),
       })
       if (!res.ok) throw new Error('request failed')
       setStatus('success')
@@ -47,6 +48,19 @@ export default function NewsletterWaitlist() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          {/* Honeypot — hidden from real visitors, off-screen not display:none so screen readers skip it correctly */}
+          <div style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>
+            <label htmlFor="newsletter-company-website">Company website</label>
+            <input
+              id="newsletter-company-website"
+              name="company_website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={company_website}
+              onChange={(e) => setCompanyWebsite(e.target.value)}
+            />
+          </div>
           <input
             type="email"
             aria-label="Email address"

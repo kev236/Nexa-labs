@@ -6,6 +6,37 @@ what changed and why, what's still open.
 
 ---
 
+## 2026-09-28 — Spam-protection gap across public forms
+
+**Checked:** conversion-funnel forms end to end (the item flagged open
+since 2026-09-16), specifically whether the honeypot anti-spam pattern
+added for the Clip Scoring API's `ApiAccessRequestForm` (2026-??) was
+applied consistently to the site's other public-facing forms.
+
+**Found and fixed (low-risk, auto-applied):** it wasn't — only
+`ApiAccessRequestForm` had a honeypot field. `ContactForm`,
+`WaitlistForm`, `ProductWaitlistForm`, and `NewsletterWaitlist` (4 of 5
+public forms, backed by `/api/contact` and the shared `/api/waitlist`
+route) had no bot filtering at all. Added the identical honeypot
+pattern already established for the one form that had it: an
+off-screen (not `display:none`, so it's real to bots' autofill but
+correctly skipped by screen readers) `company_website` field, checked
+server-side in both routes — a filled value returns a fake `{success:
+true}` so a bot can't tell it was silently dropped.
+
+**Checked clean, no fix needed:**
+- Neither route's core validation, Sanity-write, or email-send logic
+  needed any change — the honeypot check is a single early-return ahead
+  of existing logic, same shape as the reference implementation.
+
+**Verification:** `npx tsc --noEmit` and `npm run lint` both clean
+across the whole project.
+
+**Open:** none new from this pass — this closes a real, standing gap
+rather than opening one.
+
+---
+
 ## 2026-09-28 — Closed out: nexa-ai dashboard mobile-nav device check
 
 **Checked:** the item the 2026-09-23 entry flagged as open ("a real

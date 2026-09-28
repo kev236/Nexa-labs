@@ -12,6 +12,7 @@ export default function WaitlistForm({
   slug,
 }: WaitlistFormProps) {
   const [email, setEmail] = useState('')
+  const [company_website, setCompanyWebsite] = useState('') // honeypot
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -26,7 +27,7 @@ export default function WaitlistForm({
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, productName, slug }),
+        body: JSON.stringify({ email, productName, slug, company_website }),
       })
 
       if (!res.ok) {
@@ -61,6 +62,20 @@ export default function WaitlistForm({
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Honeypot — hidden from real visitors, off-screen not display:none so screen readers skip it correctly */}
+          <div style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>
+            <label htmlFor="waitlist-company-website">Company website</label>
+            <input
+              id="waitlist-company-website"
+              name="company_website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={company_website}
+              onChange={(e) => setCompanyWebsite(e.target.value)}
+            />
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-3">
             <input
               type="email"

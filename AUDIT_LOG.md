@@ -6,6 +6,53 @@ what changed and why, what's still open.
 
 ---
 
+## 2026-09-28 — Closed out: nexa-ai dashboard mobile-nav device check
+
+**Checked:** the item the 2026-09-23 entry flagged as open ("a real
+cross-browser/device check of the new mobile-nav work on the sibling
+nexa-ai dashboard"). Started the dashboard's real dev server
+(`packages/dashboard`, Next.js/Turbopack) and drove it with Playwright
+against three real device profiles (iPhone SE, iPhone 14, Pixel 7)
+across four routes (`/`, `/chat`, `/campaigns`, `/transactions`).
+
+**Found:**
+- No horizontal overflow (`scrollWidth > clientWidth`) on any of the 12
+  device/route combinations.
+- All routes returned 200 and rendered cleanly at real phone
+  viewports. Two routes (`/`, `/chat` on iPhone SE) initially timed out
+  waiting for Playwright's `networkidle` — re-checked with `load`
+  instead and both rendered correctly; the timeout was a live-polling
+  connection (chat streaming / dashboard auto-refresh) keeping the
+  network non-idle, not a rendering bug.
+- All four routes require auth and redirected to the sign-in screen,
+  which itself is centered, legible, and correctly scaled on every
+  device tested with no code changes needed.
+
+**Not verified this pass:** the actual authenticated dashboard chrome
+(top nav / bottom tab bar) beyond the sign-in screen — no seeded
+dev/test credentials were found in the repo (checked `.env.example`,
+docs, seed scripts) and none were fabricated to force a login, per
+standing "never invent facts / never take unrequested risky action"
+rule. If a real login exists, a follow-up pass should sign in and
+re-check the actual nav chrome on these same three devices.
+
+**No code changes made** — this was a verification-only pass; nothing
+in either repo needed fixing as a result.
+
+**Verification:** dashboard dev server started clean (permission-engine
+build + `next dev` succeeded, `Ready in 2.6s`); no console/server errors
+during the checks. Scratch Playwright scripts removed after use; both
+repos confirmed clean (`git status --short` empty) before and after.
+
+**Open:**
+- Authenticated dashboard nav chrome still unverified at real
+  viewports (needs real credentials, see above).
+- Same standing items as every prior entry: legal pages'
+  KvK/VAT/address placeholders and checkout remain blocked on the
+  business actually registering — not touched here.
+
+---
+
 ## 2026-09-23 — Content accuracy, SEO metadata, accessibility pass
 
 **Checked:** the two items the 2026-09-16 entry flagged as not yet

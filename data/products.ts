@@ -38,7 +38,7 @@ export const UPCOMING_PRODUCTS: UpcomingProduct[] = [
     id: 'nexa-auth',
     title: 'Nexa MicroAuth',
     description:
-      'Stateless Passkey & WebAuthn authentication widget with sub-5ms Edge verification.',
+      'Stateless Passkey & WebAuthn authentication widget for SaaS sign-in.',
     category: 'Developer Tools',
     votes: 98,
   },

@@ -6,6 +6,34 @@ what changed and why, what's still open.
 
 ---
 
+## 2026-09-28 — Fabricated benchmark on an unbuilt roadmap product
+
+**Checked:** broadened the superlative/unverified-claim sweep from the
+2026-09-23 pass to cover `data/products.ts` (the static "upcoming
+products" roadmap list, not yet live-built — see the file's own
+comment), which that pass hadn't scoped in.
+
+**Found and fixed (low-risk, auto-applied):** `Nexa MicroAuth`, one of
+three not-yet-built roadmap items, was described as having "sub-5ms
+Edge verification" — a specific, concrete performance benchmark for
+a product that doesn't exist yet (no code, no deployment). Same
+category of issue as the "Sub-15ms Edge" claim fixed on real shipped
+products in the 09-23 pass, just on a roadmap teaser instead. Removed
+the fabricated number, kept the honest feature description ("Passkey &
+WebAuthn authentication widget for SaaS sign-in").
+
+**Checked clean, no fix needed:** the other two roadmap entries
+(`Nexa CronEngine`, `Nexa Slate`) and a broader grep for
+guarantee/fastest/best-in-class/military-grade/unlimited/seamless/
+revolutionary-type language across `app/`, `components/`, `data/`,
+`lib/` — no other hits beyond CSS `width: 100%` false positives.
+
+**Verification:** `npx tsc --noEmit` and `npm run lint` both clean.
+
+**Open:** none new.
+
+---
+
 ## 2026-09-28 — Spam-protection gap across public forms
 
 **Checked:** conversion-funnel forms end to end (the item flagged open

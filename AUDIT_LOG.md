@@ -6,6 +6,32 @@ what changed and why, what's still open.
 
 ---
 
+## 2026-09-28 — Stale comment in Footer.tsx re: legal page 404s
+
+**Checked:** whether the Privacy Policy / Terms & Conditions / Cookie
+Policy footer links still 404, per the warning comment sitting above
+them (`components/Footer.tsx`) — verified directly against the Sanity
+`legal` dataset rather than trusting the comment.
+
+**Found and fixed (low-risk, auto-applied):** all three `legal`
+documents (slugs `privacy-policy`, `terms-and-conditions`,
+`cookie-policy`) are published in Sanity and confirmed resolving
+through `app/[slug]/page.tsx`'s query — the comment describing them as
+404ing and needing to be created was stale (left over from before the
+2026-09-16 session that drafted and published them). Replaced it with
+a short, accurate note pointing at AGENTS.md for the real open item
+(bracketed placeholders + lawyer review still pending).
+
+**No copy or legal text touched** — this was a code-comment accuracy
+fix only, not a change to the published policies themselves.
+
+**Also reviewed this pass, no changes needed:** homepage, products,
+about, contact, blog, changelog, success page — copy is honest, no
+placeholders/lorem/stale claims, SEO metadata (`layout.tsx`,
+`sitemap.ts`, `robots.ts`) present and correct.
+
+---
+
 ## 2026-09-28 — Fabricated benchmark on an unbuilt roadmap product
 
 **Checked:** broadened the superlative/unverified-claim sweep from the

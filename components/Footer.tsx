@@ -37,13 +37,9 @@ export default async function Footer() {
       <div className="max-w-6xl mx-auto px-6 mt-8 pt-6 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-4 text-zinc-600">
         <span>© {new Date().getFullYear()} Nexa Labs. All rights reserved.</span>
         {/*
-         * Compliance audit (see repo notes): these point at the legal
-         * pages Nexa Labs is legally required to publish (privacy
-         * policy, terms, cookie policy) via the `legal` Sanity type.
-         * They 404 until those documents actually exist in Sanity —
-         * create them there with slugs matching these hrefs exactly.
-         * Content must come from the business/its lawyer, never
-         * invented here.
+         * Legal pages (privacy policy, terms, cookie policy) are published
+         * in Sanity (`legal` type, matching slugs) and reviewed by a lawyer
+         * once the business is operating for real — see AGENTS.md.
          */}
         <div className="flex items-center gap-5">
           <Link href="/privacy-policy" className="hover:text-zinc-300 transition-colors">
